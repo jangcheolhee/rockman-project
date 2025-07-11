@@ -7,6 +7,7 @@ void SceneMgr::Init()
 {
 
 	scenes.push_back(new SceneGame());
+	
 
 	for (auto scene : scenes)
 	{

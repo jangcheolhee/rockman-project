@@ -48,6 +48,7 @@ void AniPlayer::Init()
 		[]()
 		{
 			std::cout << "!!" << std::endl;
+			
 		}
 	);
 
@@ -79,12 +80,13 @@ void AniPlayer::Reset()
 	animator.Play("animations/idle.csv");
 	
 	SetOrigin(Origins::BC);
+	
 }
 
 void AniPlayer::Update(float dt)
 {
 	animator.Update(dt);
-
+	std::cout << position.x << position.y << std::endl;
 	float h = 0.f;
 	if (isGrounded)
 	{
@@ -94,6 +96,7 @@ void AniPlayer::Update(float dt)
 	if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
 		isGrounded = false;
+		isGround = true;
 		velocity.y = -250.f;
 		animator.Play("animations/jump.csv");
 		
@@ -103,11 +106,12 @@ void AniPlayer::Update(float dt)
 		velocity += gravity * dt;
 	}
 	position += velocity * dt;
-	if (position.y > 0.f)
+	if (isGround)
 	{
 		velocity.y = 0.f;
-		position.y = 0.f;
+		
 		isGrounded = true;
+		isGround = false;
 	}
 	SetPosition(position);
 

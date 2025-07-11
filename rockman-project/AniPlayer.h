@@ -13,14 +13,17 @@ protected:
 	sf::Vector2f gravity = { 0.f, 500.f };
 	sf::Vector2f velocity = { 0.f, 0.f };
 	bool isGrounded = true;
+	bool isGround = false;
 	float speed = 100.f;
 	HitBox hitbox;
 	SceneGame* sceneGame = nullptr;
+
 
 public:
 	AniPlayer(const std::string& name = "");
 	~AniPlayer() = default;
 
+	void SetIsGround() { isGround = true; }
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
 	void SetScale(const sf::Vector2f& scale) override;

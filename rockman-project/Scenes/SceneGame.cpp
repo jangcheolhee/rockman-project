@@ -3,6 +3,7 @@
 #include "TextGo.h"
 #include "AniPlayer.h"
 #include "SpriteGo.h"
+#include "TileCollision.h"
 
 SceneGame::SceneGame() : Scene(SceneIds::Game)
 {
@@ -12,6 +13,7 @@ void SceneGame::Init()
 {
 	texIds.push_back("graphics/megaman_sprite.png");
 	texIds.push_back("graphics/map.png");
+	texIds.push_back("graphics/WoodManStage.png");
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
 	ANI_CLIP_MGR.Load("animations/idle.csv");
@@ -26,11 +28,9 @@ void SceneGame::Init()
 	go->sortingOrder = 0;
 
 	AddGameObject(go);
-	SpriteGo* background = new SpriteGo("graphics/map.png");
-	background->sortingLayer = SortingLayers::Background;
-	background->sortingOrder = 0;
-	AddGameObject(background);
+	
 	player = (AniPlayer*)AddGameObject(new AniPlayer());
+	playerInitPos = { 300,182 };
 
 	Scene::Init();
 }
@@ -42,13 +42,21 @@ void SceneGame::Enter()
 	uiView.setSize(size);
 	uiView.setCenter(center);
 	
-	player->SetPosition({ 100,100 });
+	player->SetPosition(playerInitPos);
 	
-	
-	worldView.setSize({size.x / 2, size.y / 2});
+	worldView.setSize({512,160});
 	worldView.setCenter(player->GetPosition());
-
 	
+	SpriteGo* background = new SpriteGo("graphics/map.png");
+	background->sortingLayer = SortingLayers::Background;
+	background->sortingOrder = 0;
+	tileCollision = new TileCollision();
+	tileCollision->loadFromFile("graphics/WoodManStage.png");
+	
+	
+	AddGameObject(background);
+	
+
 
 	Scene::Enter();
 }
@@ -58,6 +66,12 @@ void SceneGame::Update(float dt)
 
 	Scene::Update(dt);
 	worldView.setCenter(player->GetPosition());
+	sf::Vector2f pos = player->GetPosition();
+	std::cout << tileCollision->getTileType(pos.x, pos.y) << std::endl;
+	if (tileCollision->getTileType(pos.x, pos.y) == TileType::BLOCK)
+	{
+		player->SetIsGround();
+	}
 	
 }
 
