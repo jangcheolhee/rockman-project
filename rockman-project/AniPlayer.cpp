@@ -68,7 +68,7 @@ void AniPlayer::Reset()
 	sortingOrder = 0;
 
 	animator.Play("animations/idle.csv");
-	SetScale({ 2.f,2.f });
+	
 	SetOrigin(Origins::BC);
 }
 

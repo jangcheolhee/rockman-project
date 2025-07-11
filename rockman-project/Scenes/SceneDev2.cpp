@@ -36,7 +36,7 @@ void SceneDev2::Enter()
 	sf::Vector2f center { size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);
 	uiView.setCenter(center);
-	worldView.setSize(size);
+	worldView.setSize({512, 400});
 	worldView.setCenter({ 0.f, -200.f });
 
 	Scene::Enter();
@@ -46,8 +46,5 @@ void SceneDev2::Update(float dt)
 {
 	Scene::Update(dt);
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
-	{
-		SCENE_MGR.ChangeScene(SceneIds::Dev1);
-	}
+	
 }

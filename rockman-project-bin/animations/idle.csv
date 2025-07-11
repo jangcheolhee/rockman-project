@@ -1,7 +1,6 @@
 ID,FPS,"LoopType (0: Single, 1: Loop)		",,,
-Idle,10,1,,,
-				,,,,,
+Idle,5,1,,,
+,,,,,
 TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
 graphics/megaman_sprite.png,0,0,20,25,0
 graphics/megaman_sprite.png,22,0,20,25,0
-graphics/megaman_sprite.png,44,0,20,25,0
