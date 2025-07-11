@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "AniPlayer.h"
 
 AniPlayer::AniPlayer(const std::string& name)
@@ -41,6 +41,7 @@ void AniPlayer::SetOrigin(const sf::Vector2f& newOrigin)
 
 void AniPlayer::Init()
 {
+	
 	animator.SetTarget(&body);
 
 	animator.AddEvent("Idle", 0,
@@ -64,6 +65,14 @@ void AniPlayer::Release()
 
 void AniPlayer::Reset()
 {
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
+	{
+		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene(); //�ٿ� ĳ���� 
+	}
+	else
+	{
+		sceneGame = nullptr;
+	}
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
 
@@ -87,6 +96,7 @@ void AniPlayer::Update(float dt)
 		isGrounded = false;
 		velocity.y = -250.f;
 		animator.Play("animations/jump.csv");
+		
 	}
 	if (!isGrounded)
 	{
@@ -132,9 +142,11 @@ void AniPlayer::Update(float dt)
 			animator.Play("animations/run.csv");
 		}
 	}
+	hitbox.UpdateTransform(body, GetLocalBounds());
 }
 
 void AniPlayer::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+	hitbox.Draw(window);
 }

@@ -1,6 +1,9 @@
 #pragma once
 #include "Animator.h"
+#include "HitBox.h"
 
+
+class SceneGame;
 class AniPlayer : public GameObject
 {
 protected:
@@ -11,7 +14,8 @@ protected:
 	sf::Vector2f velocity = { 0.f, 0.f };
 	bool isGrounded = true;
 	float speed = 100.f;
-
+	HitBox hitbox;
+	SceneGame* sceneGame = nullptr;
 
 public:
 	AniPlayer(const std::string& name = "");

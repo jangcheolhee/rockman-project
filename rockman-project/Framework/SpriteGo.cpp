@@ -43,6 +43,7 @@ void SpriteGo::SetOrigin(Origins preset)
 
 void SpriteGo::Init()
 {
+
 }
 
 void SpriteGo::Release()

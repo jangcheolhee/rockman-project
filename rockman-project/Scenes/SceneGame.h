@@ -1,15 +1,18 @@
 #pragma once
 #include "Scene.h"
-class SceneDev2 : public Scene
+class AniPlayer;
+class SceneGame : public Scene
 {
 protected:
-
+	AniPlayer* player;
+	
 public:
-	SceneDev2();
+	SceneGame();
 
 	void Init() override;
 	void Enter() override;
 	void Update(float dt) override;
+	void Draw(sf::RenderWindow& window);
 
 };
 
