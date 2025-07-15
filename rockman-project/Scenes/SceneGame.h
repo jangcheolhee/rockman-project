@@ -15,6 +15,7 @@ protected:
 	std::list<Enemy*> enemyList;
 	std::list<Enemy*>enemyPool;
 	std::vector<sf::Vector2f> enemyPos;
+	sf::Music music;
 	
 public:
 	SceneGame();

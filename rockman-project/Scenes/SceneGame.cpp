@@ -12,6 +12,10 @@ SceneGame::SceneGame() : Scene(SceneIds::Game)
 
 void SceneGame::Init()
 {
+
+	
+
+	
 	texIds.push_back("graphics/megaman_sprite.png");
 	texIds.push_back("graphics/map.png");
 	texIds.push_back("graphics/WoodManStage.png");
@@ -52,6 +56,8 @@ void SceneGame::Init()
 
 void SceneGame::Enter()
 {
+	music.openFromFile("sounds/WoodMan.flac");
+	music.play();
 	auto size = FRAMEWORK.GetWindowSizeF();
 	center ={ size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);
