@@ -26,6 +26,7 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/shoot.csv");
 	ANI_CLIP_MGR.Load("animations/bat.csv");
 	ANI_CLIP_MGR.Load("animations/bat2.csv");
+	ANI_CLIP_MGR.Load("animations/rabbit.csv");
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf");
 	go->SetString("Game");
 	go->SetCharacterSize(30);
@@ -88,14 +89,17 @@ void SceneGame::Update(float dt)
 	worldView.setCenter({x, y});
 	sf::Vector2f pos = player->GetPosition();
 	
-	if (tileCollision->getTileType(pos.x + player->GetLocalBounds().width + 1, pos.y + 1) == TileType::BLOCK)
+	if (tileCollision->getTileType(pos.x , pos.y) == TileType::BLOCK)
 	{
 		player->SetIsGround();
+		player->SetIsLadder();
 	}
+
 	else if (tileCollision->getTileType(pos.x, pos.y) == TileType::LADDER)
 	{
-		//player->SetIsLadder();
+		player->SetIsLadder();
 	}
+	
 	
 }
 
@@ -123,7 +127,7 @@ void SceneGame::SpawnBats(int count)
 			enemyPool.pop_front();
 			enemy->SetActive(true);
 		}
-		enemy->SetType(Enemy::Types::Bat);
+		enemy->SetType(Enemy::Types::Rabbit);
 		enemy->Reset();
 		enemy->SetPosition(enemyPos[i]);
 
@@ -131,3 +135,9 @@ void SceneGame::SpawnBats(int count)
 		enemyList.push_back(enemy);
 	}
 }
+
+bool SceneGame::FloorCheck(float x, float y)
+{
+	return tileCollision->getTileType(x, y) == TileType::BLOCK;
+}
+

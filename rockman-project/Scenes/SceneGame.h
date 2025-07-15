@@ -26,5 +26,7 @@ public:
 	void Draw(sf::RenderWindow& window);
 	void SpawnBats(int count);
 	const std::list<Enemy*>& GetEnemies() const { return enemyList; }
+	bool FloorCheck(float x, float y);
+
 };
 

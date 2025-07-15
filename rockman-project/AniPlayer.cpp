@@ -123,10 +123,12 @@ void AniPlayer::Update(float dt)
 {
 	animator.Update(dt);
 	
+	
 	float h = InputMgr::GetAxis(Axis::Horizontal);
 	
 	if (isGrounded)
 	{
+		
 		
 		velocity.x = h * speed;
 
@@ -152,18 +154,26 @@ void AniPlayer::Update(float dt)
 		Shoot();
 		
 	}
+
+	if (!sceneGame->FloorCheck(GetPosition().x, GetPosition().y + 1))
+	{
+		isGrounded = false;
+	}
+	
 	if (!isGrounded)
 	{
 		velocity += gravity * dt;
 	}
+
 	position += velocity * dt;
 	position.x = Utils::Clamp(position.x, 70, 4000);
 	if (isGround)
 	{
 		velocity.y = 0.f;
 		position.y -= 0.1f;
-		isGrounded = true;
 		isGround = false;
+		isGrounded = true;
+		
 	}
 
 	SetPosition(position);
@@ -184,7 +194,6 @@ void AniPlayer::Update(float dt)
 			animator.Play("animations/run.csv");
 			state = State::Run;
 		}
-		
 		break;
 	case AniPlayer::State::Run:
 		if (h == 0.f)
@@ -207,8 +216,6 @@ void AniPlayer::Update(float dt)
 			animator.Play("animations/idle.csv");
 			state = State::Idle;
 		}
-		
-		
 		break;
 	case AniPlayer::State::Jump:
 		if (isGrounded)
@@ -246,32 +253,11 @@ void AniPlayer::Update(float dt)
 			}
 		}
 		break;
-	case AniPlayer::State::Count:
-		break;
+	
 	default:
 		break;
 	}
-	//if (animator.GetCurrentClipId() == "Shoot1" &&  isGrounded)
-	//{
-	//	
-	//	if (h == 0.f)
-	//	{
-	//		animator.Play("animations/idle.csv");
-	//	}
-	//
-	//
-	//}
-	//else if (animator.GetCurrentClipId() == "Shoot")
-	//{
 
-	//	if (h == 0.f)
-	//	{
-	//		animator.Play("animations/idle.csv");
-	//	}
-	//	
-
-
-	//}
 	
 	hitbox.UpdateTransform(body, GetLocalBounds());
 }

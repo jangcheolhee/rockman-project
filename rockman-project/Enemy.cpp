@@ -94,6 +94,10 @@ void Enemy::Reset()
 		isMove = false;
 		break;
 	case Enemy::Types::Rabbit:
+		
+		animator.Play("animations/rabbit.csv");
+		isMove = false;
+		isGrounded = false;
 		break;
 	case Enemy::Types::Total:
 		break;
@@ -131,6 +135,28 @@ void Enemy::Update(float dt)
 		}
 		break;
 	case Enemy::Types::Rabbit:
+
+		
+		
+		if (!isGrounded)
+		{
+			velocity += gravity * dt;
+		}
+
+		position += velocity * dt;
+		position.x = Utils::Clamp(position.x, 70, 4000);
+		if (sceneGame->FloorCheck(GetPosition().x, GetPosition().y + 1))
+		{
+			velocity.y = 0.f;
+			position.y -= 0.1f;
+			isGrounded = true;
+		}
+		moveTimer += dt;
+		if (moveTimer > moveInetrval)
+		{
+			moveTimer = 0;
+		}
+		SetPosition(position);
 		break;
 	case Enemy::Types::Total:
 		break;
@@ -158,7 +184,11 @@ void Enemy::SetType(Types type)
 		speed = 50.f;
 		
 		break;
-	
+	case Types::Rabbit:
+		hp = 100;
+		speed = 50.f;
+		moveInetrval = 3.0f;
+		break;
 
 	}
 }

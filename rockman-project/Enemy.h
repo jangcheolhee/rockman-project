@@ -27,6 +27,9 @@ protected:
 
 	sf::Vector2f direction;
 	bool isMove = false;
+	bool isGrounded = false;
+	float moveInetrval = 0.f;
+	float moveTimer = 0.f;
 
 public:
 	Enemy(const std::string& name = "");

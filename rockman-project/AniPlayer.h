@@ -26,7 +26,7 @@ protected:
 	State state;
 	sf::Vector2f gravity = { 0.f, 500.f };
 	sf::Vector2f velocity = { 0.f, 0.f };
-	bool isGrounded = true;
+	bool isGrounded = false;
 	bool isGround = false;
 	bool isLadder = false;
 	bool isShoot = false;
@@ -48,6 +48,7 @@ public:
 	~AniPlayer() = default;
 
 	void SetIsGround() { isGround = true; }
+	void SetIsGrounded() { isGrounded = true; }
 	void SetIsLadder() { isLadder = true; }
 
 	void SetPosition(const sf::Vector2f& pos) override;
