@@ -2,7 +2,7 @@
 
 int main()
 {
-    FRAMEWORK.Init(600, 400, "TITLE!!");
+    FRAMEWORK.Init(512, 512, "TITLE!!");
     FRAMEWORK.Do();
     FRAMEWORK.Release();
 

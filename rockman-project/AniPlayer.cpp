@@ -117,6 +117,7 @@ void AniPlayer::Reset()
 	direction = { 0.f, 0.f };
 	maxHp = 100;
 	hp = maxHp;
+	look = { 1.f,0.f };
 	
 	
 }

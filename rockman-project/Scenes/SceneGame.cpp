@@ -41,7 +41,7 @@ void SceneGame::Init()
 	AddGameObject(go);
 	
 	player = (AniPlayer*)AddGameObject(new AniPlayer("AniPlayer"));
-	playerInitPos = { 300,182 };
+	playerInitPos = { 150,150 };
 
 	
 
@@ -66,8 +66,8 @@ void SceneGame::Enter()
 	player->SetPosition(playerInitPos);
 	
 	
-	worldView.setSize({512,160});
-	worldView.setCenter(player->GetPosition());
+	worldView.setSize({300,300});
+	worldView.setCenter({0.f, 0.f});
 	
 	SpriteGo* background = new SpriteGo("graphics/map.png");
 	background->sortingLayer = SortingLayers::Background;
