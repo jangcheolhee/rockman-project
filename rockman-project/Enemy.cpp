@@ -89,8 +89,9 @@ void Enemy::Reset()
 	switch (type)
 	{
 	case Enemy::Types::Bat:
-
+		SetScale({ 1.f,-1.f });
 		animator.Play("animations/bat.csv");
+		isMove = false;
 		break;
 	case Enemy::Types::Rabbit:
 		break;
@@ -109,17 +110,24 @@ void Enemy::Reset()
 void Enemy::Update(float dt)
 {
 	animator.Update(dt);
+	
 	switch (type)
 	{
 	case Enemy::Types::Bat:
 
 		direction = Utils::GetNormal(player->GetPosition() - GetPosition());
-		if (Utils::Magnitude(player->GetPosition() - GetPosition()) > 50 && Utils::Magnitude(player->GetPosition() - GetPosition()) < 200)
+		if (Utils::Magnitude(player->GetPosition() - GetPosition()) >20 && Utils::Magnitude(player->GetPosition() - GetPosition()) < 200)
 		{
-
+			if (direction.x < 0)
+			{
+				SetScale({ 1.f, -1.f });
+			}
+			else
+			{
+				SetScale({ 1.f, 1.f });
+			}
 			SetRotation(Utils::Angle(direction));
 			SetPosition(GetPosition() + direction * speed * dt);
-
 		}
 		break;
 	case Enemy::Types::Rabbit:
@@ -131,6 +139,7 @@ void Enemy::Update(float dt)
 	}
 
 	hitBox.UpdateTransform(body, GetLocalBounds());
+	
 }
 
 void Enemy::Draw(sf::RenderWindow& window)
@@ -146,7 +155,7 @@ void Enemy::SetType(Types type)
 	{
 	case Types::Bat:
 		hp = 100;
-		
+		speed = 50.f;
 		
 		break;
 	

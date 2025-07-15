@@ -5,5 +5,3 @@ TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
 graphics/enemy.png,160,0,40,25,0
 graphics/enemy.png,200,0,40,25,
 graphics/enemy.png,240,0,40,25,
-graphics/enemy.png,280,0,40,25,
-graphics/enemy.png,320,0,40,25,

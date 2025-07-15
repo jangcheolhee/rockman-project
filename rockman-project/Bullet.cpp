@@ -79,12 +79,12 @@ void Bullet::Update(float dt)
 	SetPosition(position + direction * speed * dt);
 	hitBox.UpdateTransform(body, GetLocalBounds());
 	const auto& list = sceneGame->GetEnemies();
-	for (auto bat : list)
+	for (auto enemy : list)
 	{
-		if (Utils::CheckCollision(hitBox.rect, bat->GetHitBox().rect))
+		if (Utils::CheckCollision(hitBox.rect, enemy->GetHitBox().rect))
 		{
 			SetActive(false);
-			bat->OnDamage(damage);
+			enemy->OnDamage(damage);
 			break;
 		}
 	}

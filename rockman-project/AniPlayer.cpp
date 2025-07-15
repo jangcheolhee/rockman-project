@@ -214,10 +214,7 @@ void AniPlayer::Update(float dt)
 		{
 			animator.Play("animations/idle.csv");
 		}
-		else
-		{
-			animator.Play("animations/run.csv");
-		}
+	
 	
 	}
 	else if (animator.GetCurrentClipId() == "Shoot")

@@ -25,6 +25,7 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/shoot1.csv");
 	ANI_CLIP_MGR.Load("animations/shoot.csv");
 	ANI_CLIP_MGR.Load("animations/bat.csv");
+	ANI_CLIP_MGR.Load("animations/bat2.csv");
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf");
 	go->SetString("Game");
 	go->SetCharacterSize(30);
@@ -37,13 +38,13 @@ void SceneGame::Init()
 	player = (AniPlayer*)AddGameObject(new AniPlayer("AniPlayer"));
 	playerInitPos = { 300,182 };
 
-	bat = (Enemy*)AddGameObject(new Enemy());
+	
 
 	for (int i = 0; i < 100; i++)
 	{
 		Enemy* bat = (Enemy*)AddGameObject(new Enemy());
 		bat->SetActive(false);
-		batPool.push_back(bat);
+		enemyPool.push_back(bat);
 	}
 	Scene::Init();
 }
@@ -56,7 +57,7 @@ void SceneGame::Enter()
 	uiView.setCenter(center);
 	
 	player->SetPosition(playerInitPos);
-	bat->SetPosition({ 300.f,200.f });
+	
 	
 	worldView.setSize({512,160});
 	worldView.setCenter(player->GetPosition());
@@ -69,11 +70,12 @@ void SceneGame::Enter()
 	
 	
 	AddGameObject(background);
-	
-	enemyPos.push_back({ 347.f,200.f });
-	enemyPos.push_back({ 419.f,180.f });
-	enemyPos.push_back({ 500.f,200.f });
-	SpawnBats(3);
+
+	for (int i = 0; i < 10; i++)
+	{
+		enemyPos.push_back({ 347.f + 100 * i, (float)Utils::RandomRange(90, 120)});
+	}
+	SpawnBats(10);
 	Scene::Enter();
 }
 
@@ -107,7 +109,7 @@ void SceneGame::SpawnBats(int count)
 	for (int i = 0; i < count; i++)
 	{
 		Enemy* enemy = nullptr;
-		if (batPool.empty())
+		if (enemyPool.empty())
 		{
 			enemy = (Enemy*)AddGameObject(new Enemy());
 			enemy->Init();
@@ -115,8 +117,8 @@ void SceneGame::SpawnBats(int count)
 		}
 		else
 		{
-			enemy = batPool.front();
-			batPool.pop_front();
+			enemy = enemyPool.front();
+			enemyPool.pop_front();
 			enemy->SetActive(true);
 		}
 		enemy->SetType(Enemy::Types::Bat);
@@ -124,6 +126,6 @@ void SceneGame::SpawnBats(int count)
 		enemy->SetPosition(enemyPos[i]);
 
 
-		batList.push_back(enemy);
+		enemyList.push_back(enemy);
 	}
 }

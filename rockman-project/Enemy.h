@@ -23,9 +23,10 @@ protected:
 	int hp;
 	Types type = Types::Bat;
 	AniPlayer* player;
-	float speed = 50.f;
+	float speed = 0.f;
 
 	sf::Vector2f direction;
+	bool isMove = false;
 
 public:
 	Enemy(const std::string& name = "");
