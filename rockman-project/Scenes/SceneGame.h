@@ -7,6 +7,8 @@ class SceneGame : public Scene
 {
 protected:
 	AniPlayer* player;
+
+	sf::Vector2f center;
 	
 	sf::Vector2f playerInitPos;
 	TileCollision* tileCollision;

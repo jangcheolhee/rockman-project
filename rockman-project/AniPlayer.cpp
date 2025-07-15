@@ -70,20 +70,20 @@ void AniPlayer::Init()
 	
 	animator.SetTarget(&body);
 
-	animator.AddEvent("Idle", 0,
-		[]()
-		{
-			std::cout << "!!" << std::endl;
-			
-		}
-	);
+	//animator.AddEvent("Idle", 0,
+	//	[]()
+	//	{
+	//		std::cout << "!!" << std::endl;
+	//		
+	//	}
+	//);
 
-	animator.AddEvent("Idle", 0,
-		[]()
-		{
-			std::cout << "??" << std::endl;
-		}
-	);
+	//animator.AddEvent("Idle", 0,
+	//	[]()
+	//	{
+	//		std::cout << "??" << std::endl;
+	//	}
+	//);
 }
 
 void AniPlayer::Release()
@@ -106,6 +106,7 @@ void AniPlayer::Reset()
 	animator.Play("animations/idle.csv");
 	
 	SetOrigin(Origins::BC);
+	state = State::Idle;
 
 	for (Bullet* bullet : bulletList)
 	{
@@ -122,37 +123,32 @@ void AniPlayer::Update(float dt)
 {
 	animator.Update(dt);
 	
-	float h = 0.f;
-	
+	float h = InputMgr::GetAxis(Axis::Horizontal);
 	
 	if (isGrounded)
 	{
-		h = InputMgr::GetAxis(Axis::Horizontal);
+		
 		velocity.x = h * speed;
 
 	}
 	if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::Z))
 	{
+		
 		isGrounded = false;
 		
 		velocity.y = -250.f;
+		state = State::Jump;
 		animator.Play("animations/jump.csv");
 		
 	}
 	shootTimer += dt;
 	if (InputMgr::GetKeyDown(sf::Keyboard::X) && shootTimer > shootInterval)
 	{
-		if (!isGrounded)
-		{
-			animator.Play("animations/shoot1.csv");
-			
-		}
-		else
-		{
-			animator.Play("animations/shoot.csv");
-		}
-		shootTimer = 0.f;
+		
 		isShoot = true;
+		
+		shootTimer = 0.f;
+		
 		Shoot();
 		
 	}
@@ -161,6 +157,7 @@ void AniPlayer::Update(float dt)
 		velocity += gravity * dt;
 	}
 	position += velocity * dt;
+	position.x = Utils::Clamp(position.x, 70, 4000);
 	if (isGround)
 	{
 		velocity.y = 0.f;
@@ -168,11 +165,7 @@ void AniPlayer::Update(float dt)
 		isGrounded = true;
 		isGround = false;
 	}
-	if (isLadder)
-	{
-	h:InputMgr::GetAxis(Axis::Vertical);
-		velocity.y = h * speed;
-	}
+
 	SetPosition(position);
 
 	if (h != 0.f)
@@ -182,52 +175,103 @@ void AniPlayer::Update(float dt)
 	}
 
 	// Ani
-	if (animator.GetCurrentClipId() == "Idle")
+	switch (state)
 	{
+	case AniPlayer::State::Idle:
+		
 		if (h != 0.f)
 		{
 			animator.Play("animations/run.csv");
-		}
-	}
-	else if (animator.GetCurrentClipId() == "Run")
-	{
-		if (h == 0.f)
-		{
-			animator.Play("animations/idle.csv");
-		}
-	}
-	else if (animator.GetCurrentClipId() == "Jump" && isGrounded)
-	{
-		if (h == 0.f)
-		{
-			animator.Play("animations/idle.csv");
-		}
-		else
-		{
-			animator.Play("animations/run.csv");
-		}
-	}
-	else if (animator.GetCurrentClipId() == "Shoot1" &&  isGrounded)
-	{
-		
-		if (h == 0.f)
-		{
-			animator.Play("animations/idle.csv");
-		}
-	
-	
-	}
-	else if (animator.GetCurrentClipId() == "Shoot")
-	{
-
-		if (h == 0.f)
-		{
-			animator.Play("animations/idle.csv");
+			state = State::Run;
 		}
 		
-
-
+		break;
+	case AniPlayer::State::Run:
+		if (h == 0.f)
+		{
+			animator.Play("animations/idle.csv");
+			state = State::Idle;
+		}
+		if (isShoot)
+		{
+			animator.Play("animations/shoot.csv");
+			state = State::Shoot;
+			isShoot = false;
+		}
+		break;
+	case AniPlayer::State::Hurt:
+		break;
+	case AniPlayer::State::Shoot:
+		if (h == 0.f)
+		{
+			animator.Play("animations/idle.csv");
+			state = State::Idle;
+		}
+		
+		
+		break;
+	case AniPlayer::State::Jump:
+		if (isGrounded)
+		{
+			if (h == 0.f)
+			{
+				animator.Play("animations/idle.csv");
+				state = State::Idle;
+			}
+			else
+			{
+				animator.Play("animations/run.csv");
+				state = State::Run;
+			}
+		}
+		if (isShoot)
+		{
+			animator.Play("animations/shoot1.csv");
+			isShoot = false;
+			state = State::JumpShoot;
+		}
+		break;
+	case AniPlayer::State::JumpShoot:
+		if (isGrounded)
+		{
+			if (h == 0.f)
+			{
+				animator.Play("animations/idle.csv");
+				state = State::Idle;
+			}
+			else
+			{
+				animator.Play("animations/run.csv");
+				state = State::Run;
+			}
+		}
+		break;
+	case AniPlayer::State::Count:
+		break;
+	default:
+		break;
 	}
+	//if (animator.GetCurrentClipId() == "Shoot1" &&  isGrounded)
+	//{
+	//	
+	//	if (h == 0.f)
+	//	{
+	//		animator.Play("animations/idle.csv");
+	//	}
+	//
+	//
+	//}
+	//else if (animator.GetCurrentClipId() == "Shoot")
+	//{
+
+	//	if (h == 0.f)
+	//	{
+	//		animator.Play("animations/idle.csv");
+	//	}
+	//	
+
+
+	//}
 	
 	hitbox.UpdateTransform(body, GetLocalBounds());
 }

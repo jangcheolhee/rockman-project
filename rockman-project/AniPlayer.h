@@ -8,10 +8,22 @@ class Bullet;
 
 class AniPlayer : public GameObject
 {
+public:
+	enum class State
+	{
+		Default = -1,
+		Idle,
+		Run,
+		Hurt,
+		Shoot,
+		Jump,
+		JumpShoot,
+		Count,
+	};
 protected:
 	sf::Sprite body;
 	Animator animator;
-
+	State state;
 	sf::Vector2f gravity = { 0.f, 500.f };
 	sf::Vector2f velocity = { 0.f, 0.f };
 	bool isGrounded = true;

@@ -52,7 +52,7 @@ void SceneGame::Init()
 void SceneGame::Enter()
 {
 	auto size = FRAMEWORK.GetWindowSizeF();
-	sf::Vector2f center { size.x * 0.5f, size.y * 0.5f };
+	center ={ size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);
 	uiView.setCenter(center);
 	
@@ -83,10 +83,12 @@ void SceneGame::Update(float dt)
 {
 
 	Scene::Update(dt);
-	worldView.setCenter(player->GetPosition());
+	float x = Utils::Clamp(player->GetPosition().x, center.x, 4000);
+	float y = Utils::Clamp(player->GetPosition().y, 0, 800);
+	worldView.setCenter({x, y});
 	sf::Vector2f pos = player->GetPosition();
 	
-	if (tileCollision->getTileType(pos.x, pos.y) == TileType::BLOCK)
+	if (tileCollision->getTileType(pos.x + player->GetLocalBounds().width + 1, pos.y + 1) == TileType::BLOCK)
 	{
 		player->SetIsGround();
 	}
