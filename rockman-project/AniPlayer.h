@@ -41,6 +41,8 @@ protected:
 
 	float shootInterval = 0.1f;
 	float shootTimer = 0.f;
+	int maxHp = 0;
+	int hp = 0;
 
 
 public:
@@ -73,4 +75,5 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+	void OnDamage(int damage);
 };

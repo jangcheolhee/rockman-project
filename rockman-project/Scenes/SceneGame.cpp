@@ -112,7 +112,30 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 void SceneGame::SpawnBats(int count)
 {
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < count  - 5; i++)
+	{
+		Enemy* enemy = nullptr;
+		if (enemyPool.empty())
+		{
+			enemy = (Enemy*)AddGameObject(new Enemy());
+			enemy->Init();
+
+		}
+		else
+		{
+			enemy = enemyPool.front();
+			enemyPool.pop_front();
+			enemy->SetActive(true);
+		}
+		enemy->SetType(Enemy::Types::Bat);
+		enemy->Reset();
+		enemy->SetPosition(enemyPos[i]);
+
+
+		enemyList.push_back(enemy);
+	}
+
+	for (int i = 5; i < count; i++)
 	{
 		Enemy* enemy = nullptr;
 		if (enemyPool.empty())

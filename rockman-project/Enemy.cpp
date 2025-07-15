@@ -42,6 +42,7 @@ void Enemy::SetOrigin(Origins preset)
 
 void Enemy::OnDamage(int damage)
 {
+	if (!isMove) damage = 0;
 	hp = Utils::Clamp(hp - damage, 0, 100);
 	if (hp == 0)
 	{
@@ -89,14 +90,14 @@ void Enemy::Reset()
 	switch (type)
 	{
 	case Enemy::Types::Bat:
-		SetScale({ 1.f,-1.f });
+		SetScale({ 1.f,1.f });
 		animator.Play("animations/bat.csv");
 		isMove = false;
 		break;
 	case Enemy::Types::Rabbit:
 		
 		animator.Play("animations/rabbit.csv");
-		isMove = false;
+		isMove = true;
 		isGrounded = false;
 		break;
 	case Enemy::Types::Total:
@@ -122,6 +123,12 @@ void Enemy::Update(float dt)
 		direction = Utils::GetNormal(player->GetPosition() - GetPosition());
 		if (Utils::Magnitude(player->GetPosition() - GetPosition()) >20 && Utils::Magnitude(player->GetPosition() - GetPosition()) < 200)
 		{
+			if (!isMove)
+			{
+				scale.y *= -1;
+				animator.Play("animations/bat.csv");
+			}
+			isMove = true;
 			if (direction.x < 0)
 			{
 				SetScale({ 1.f, -1.f });
@@ -133,11 +140,22 @@ void Enemy::Update(float dt)
 			SetRotation(Utils::Angle(direction));
 			SetPosition(GetPosition() + direction * speed * dt);
 		}
+		else
+		{
+			if (!isMove)
+			{
+				scale.y *= -1;
+				animator.Play("animations/bat2.csv");
+			}
+			isMove = false;
+		}
 		break;
 	case Enemy::Types::Rabbit:
 
 		
-		
+		direction = Utils::GetNormal(player->GetPosition() - GetPosition());
+
+
 		if (!isGrounded)
 		{
 			velocity += gravity * dt;
@@ -148,12 +166,24 @@ void Enemy::Update(float dt)
 		if (sceneGame->FloorCheck(GetPosition().x, GetPosition().y + 1))
 		{
 			velocity.y = 0.f;
+			velocity.x = 0.f;
 			position.y -= 0.1f;
 			isGrounded = true;
 		}
 		moveTimer += dt;
 		if (moveTimer > moveInetrval)
 		{
+			if (direction.x < 0)
+			{
+				SetScale({ 1.f,1.f });
+				velocity.x = -100.f;
+			}
+			else {
+				SetScale({ -1.f,1.f });
+				velocity.x = 100.f;
+			}
+			velocity.y = -150.f;
+			isGrounded = false;
 			moveTimer = 0;
 		}
 		SetPosition(position);

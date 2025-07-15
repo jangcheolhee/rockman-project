@@ -115,6 +115,8 @@ void AniPlayer::Reset()
 	}
 	bulletList.clear();
 	direction = { 0.f, 0.f };
+	maxHp = 100;
+	hp = maxHp;
 	
 	
 }
