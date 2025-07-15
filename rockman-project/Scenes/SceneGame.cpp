@@ -41,7 +41,7 @@ void SceneGame::Init()
 	AddGameObject(go);
 	
 	player = (AniPlayer*)AddGameObject(new AniPlayer("AniPlayer"));
-	playerInitPos = { 150,150 };
+	playerInitPos = { 140,0 };
 
 	
 
@@ -63,18 +63,18 @@ void SceneGame::Enter()
 	uiView.setSize(size);
 	uiView.setCenter(center);
 	
-	player->SetPosition(playerInitPos);
+	
 	
 	
 	worldView.setSize({300,300});
-	worldView.setCenter({0.f, 0.f});
+	worldView.setCenter({150.f, 150.f});
 	
 	SpriteGo* background = new SpriteGo("graphics/map.png");
 	background->sortingLayer = SortingLayers::Background;
 	background->sortingOrder = 0;
 	tileCollision = new TileCollision();
 	tileCollision->loadFromFile("graphics/WoodManStage.png");
-	
+	player->SetPosition(playerInitPos);
 	
 	AddGameObject(background);
 
@@ -95,15 +95,36 @@ void SceneGame::Update(float dt)
 	worldView.setCenter({x, y});
 	sf::Vector2f pos = player->GetPosition();
 	
-	if (tileCollision->getTileType(pos.x , pos.y) == TileType::BLOCK)
+	if (tileCollision->getTileType(pos.x , pos.y ) == TileType::BLOCK || tileCollision->getTileType(pos.x, pos.y) == TileType::LADDER)
 	{
 		player->SetIsGround();
-		player->SetIsLadder();
+		
+	}
+	// 위 충돌 검사
+	if (tileCollision->getTileType(pos.x , pos.y  - player->GetLocalBounds().height - 1) == TileType::BLOCK )
+	{
+		player->SetIsCeiling();
+		
+	}
+	// 왼쪽 충돌 검사
+	if (tileCollision->getTileType(pos.x - player->GetLocalBounds().width / 2 - 1, pos.y - player->GetLocalBounds().height / 2) == TileType::BLOCK)
+	{
+		player->SetIsWallLeft();
+	}
+	// 오른쪽 충돌 검사
+	if (tileCollision->getTileType(pos.x + player->GetLocalBounds().width/ 2 + 1, pos.y - player->GetLocalBounds().height / 2) == TileType::BLOCK)
+	{
+		player->SetIsWallRight();
 	}
 
-	else if (tileCollision->getTileType(pos.x, pos.y) == TileType::LADDER)
+	// 사다리 검사
+	if (tileCollision->getTileType(pos.x , pos.y  + 1) == TileType::LADDER || tileCollision->getTileType(pos.x, pos.y - player->GetLocalBounds().height - 1) == TileType::LADDER)
 	{
 		player->SetIsLadder();
+	}
+	else
+	{
+		player->SetLadder();
 	}
 	
 	
@@ -167,6 +188,6 @@ void SceneGame::SpawnBats(int count)
 
 bool SceneGame::FloorCheck(float x, float y)
 {
-	return tileCollision->getTileType(x, y) == TileType::BLOCK;
+	return tileCollision->getTileType(x, y) == TileType::BLOCK || tileCollision->getTileType(x, y) == TileType::LADDER;
 }
 

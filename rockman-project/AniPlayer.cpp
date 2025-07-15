@@ -44,6 +44,7 @@ void AniPlayer::SetOrigin(const sf::Vector2f& newOrigin)
 void AniPlayer::Shoot()
 {
 	Bullet* bullet = nullptr;
+
 	if (bulletPool.empty())
 	{
 		bullet = new Bullet();
@@ -54,7 +55,6 @@ void AniPlayer::Shoot()
 		bullet = bulletPool.front();
 		bulletPool.pop_front();
 		bullet->SetActive(true);
-
 	}
 
 	bullet->Reset();
@@ -67,23 +67,7 @@ void AniPlayer::Shoot()
 
 void AniPlayer::Init()
 {
-	
 	animator.SetTarget(&body);
-
-	//animator.AddEvent("Idle", 0,
-	//	[]()
-	//	{
-	//		std::cout << "!!" << std::endl;
-	//		
-	//	}
-	//);
-
-	//animator.AddEvent("Idle", 0,
-	//	[]()
-	//	{
-	//		std::cout << "??" << std::endl;
-	//	}
-	//);
 }
 
 void AniPlayer::Release()
@@ -93,20 +77,20 @@ void AniPlayer::Release()
 void AniPlayer::Reset()
 {
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
-	{
-		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene(); //�ٿ� ĳ���� 
-	}
+		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 	else
-	{
 		sceneGame = nullptr;
-	}
+
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
 
 	animator.Play("animations/idle.csv");
-	
 	SetOrigin(Origins::BC);
+
 	state = State::Idle;
+	maxHp = 100;
+	hp = maxHp;
+	look = { 1.f, 0.f };
 
 	for (Bullet* bullet : bulletList)
 	{
@@ -114,91 +98,91 @@ void AniPlayer::Reset()
 		bulletPool.push_back(bullet);
 	}
 	bulletList.clear();
+
 	direction = { 0.f, 0.f };
-	maxHp = 100;
-	hp = maxHp;
-	look = { 1.f,0.f };
-	
-	
 }
 
 void AniPlayer::Update(float dt)
 {
 	animator.Update(dt);
-	
-	
+
 	float h = InputMgr::GetAxis(Axis::Horizontal);
-	
+	float v = InputMgr::GetAxis(Axis::Vertical);
+
+	// 이동 처리
 	if (isGrounded)
-	{
-		
-		
 		velocity.x = h * speed;
 
-	}
+	// 점프 처리
 	if (isGrounded && InputMgr::GetKeyDown(sf::Keyboard::Z))
 	{
-		
 		isGrounded = false;
-		
 		velocity.y = -250.f;
 		state = State::Jump;
 		animator.Play("animations/jump.csv");
-		
 	}
+
+	// 슈팅 처리
 	shootTimer += dt;
 	if (InputMgr::GetKeyDown(sf::Keyboard::X) && shootTimer > shootInterval)
 	{
-		
 		isShoot = true;
-		
 		shootTimer = 0.f;
-		
 		Shoot();
-		
 	}
 
+	// 낙하 중인지 검사
 	if (!sceneGame->FloorCheck(GetPosition().x, GetPosition().y + 1))
-	{
 		isGrounded = false;
-	}
-	
-	if (!isGrounded)
-	{
-		velocity += gravity * dt;
-	}
 
-	position += velocity * dt;
-	position.x = Utils::Clamp(position.x, 70, 4000);
+	
 	if (isGround)
 	{
 		velocity.y = 0.f;
 		position.y -= 0.1f;
 		isGround = false;
 		isGrounded = true;
+	}
+	if (!isGrounded && !isLadder)
+	{
+		velocity += gravity * dt;
+	}
+
+	if (isLadder)
+	{
+		velocity.x = 0.f; // 사다리에서 x 이동 제한할 경우
+		velocity.y = v * speed;
+		std::cout << velocity.y;
 		
 	}
+
+	// 위치 적용
+	position += velocity * dt;
+	std::cout << position.y;
+
+	position.x = Utils::Clamp(position.x, 120, 4000);
 
 	SetPosition(position);
 
+	// 방향 전환
 	if (h != 0.f)
 	{
-		SetScale(h > 0.f ? sf::Vector2f(1.0f, 1.0) : sf::Vector2f(- 1.f, 1.0f));
-		look = (h > 0.f ? sf::Vector2f(1.0f, 0.f) : sf::Vector2f(-1.f, 0.f));
+		SetScale(h > 0.f ? sf::Vector2f(1.f, 1.f) : sf::Vector2f(-1.f, 1.f));
+		look = (h > 0.f) ? sf::Vector2f(1.f, 0.f) : sf::Vector2f(-1.f, 0.f);
 	}
 
-	// Ani
+	// 애니메이션 상태 전환
 	switch (state)
 	{
-	case AniPlayer::State::Idle:
-		
+	case State::Idle:
 		if (h != 0.f)
 		{
 			animator.Play("animations/run.csv");
 			state = State::Run;
 		}
 		break;
-	case AniPlayer::State::Run:
+
+	case State::Run:
 		if (h == 0.f)
 		{
 			animator.Play("animations/idle.csv");
@@ -211,16 +195,16 @@ void AniPlayer::Update(float dt)
 			isShoot = false;
 		}
 		break;
-	case AniPlayer::State::Hurt:
-		break;
-	case AniPlayer::State::Shoot:
+
+	case State::Shoot:
 		if (h == 0.f)
 		{
 			animator.Play("animations/idle.csv");
 			state = State::Idle;
 		}
 		break;
-	case AniPlayer::State::Jump:
+
+	case State::Jump:
 		if (isGrounded)
 		{
 			if (h == 0.f)
@@ -241,7 +225,8 @@ void AniPlayer::Update(float dt)
 			state = State::JumpShoot;
 		}
 		break;
-	case AniPlayer::State::JumpShoot:
+
+	case State::JumpShoot:
 		if (isGrounded)
 		{
 			if (h == 0.f)
@@ -256,12 +241,15 @@ void AniPlayer::Update(float dt)
 			}
 		}
 		break;
-	
+
+	case State::Hurt:
+		// Hurt 처리 필요시 추가
+		break;
+
 	default:
 		break;
 	}
 
-	
 	hitbox.UpdateTransform(body, GetLocalBounds());
 }
 

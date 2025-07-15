@@ -52,6 +52,22 @@ public:
 	void SetIsGround() { isGround = true; }
 	void SetIsGrounded() { isGrounded = true; }
 	void SetIsLadder() { isLadder = true; }
+	void SetLadder() { isLadder = false; }
+
+	void SetIsCeiling() {
+		velocity.y = 0.f;
+		position.y += 1.f; 
+	}
+	void SetIsWallLeft() {
+		velocity.x = 0.f;
+		position.x += 1.f; 
+		
+	}
+	void SetIsWallRight() {
+		velocity.x = 0.f;
+		position.x -= 1.f; 
+		
+	}
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
