@@ -3,8 +3,16 @@
 #include "Animator.h"
 #include "SceneGame.h"
 #include "HitBox.h"
-class Bat : public GameObject
+class AniPlayer;
+class Enemy : public GameObject
 {
+public:
+	enum class Types
+	{
+		Bat,
+		Rabbit,
+		Total,
+	};
 protected:
 	sf::Sprite body;
 	Animator animator;
@@ -13,10 +21,15 @@ protected:
 	sf::Vector2f velocity = { 0.f, 0.f };
 	HitBox hitBox;
 	int hp;
+	Types type = Types::Bat;
+	AniPlayer* player;
+	float speed = 50.f;
+
+	sf::Vector2f direction;
 
 public:
-	Bat(const std::string& name = "");
-	~Bat() = default;
+	Enemy(const std::string& name = "");
+	~Enemy() = default;
 
 
 
@@ -44,5 +57,7 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void SetType(Types type);
 };
 

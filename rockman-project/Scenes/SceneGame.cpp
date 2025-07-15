@@ -4,7 +4,7 @@
 #include "AniPlayer.h"
 #include "SpriteGo.h"
 #include "TileCollision.h"
-#include "Bat.h"
+#include "Enemy.h"
 
 SceneGame::SceneGame() : Scene(SceneIds::Game)
 {
@@ -34,14 +34,14 @@ void SceneGame::Init()
 
 	AddGameObject(go);
 	
-	player = (AniPlayer*)AddGameObject(new AniPlayer());
+	player = (AniPlayer*)AddGameObject(new AniPlayer("AniPlayer"));
 	playerInitPos = { 300,182 };
 
-	bat = (Bat*)AddGameObject(new Bat());
+	bat = (Enemy*)AddGameObject(new Enemy());
 
 	for (int i = 0; i < 100; i++)
 	{
-		Bat* bat = (Bat*)AddGameObject(new Bat());
+		Enemy* bat = (Enemy*)AddGameObject(new Enemy());
 		bat->SetActive(false);
 		batPool.push_back(bat);
 	}
@@ -106,24 +106,24 @@ void SceneGame::SpawnBats(int count)
 {
 	for (int i = 0; i < count; i++)
 	{
-		Bat* bat = nullptr;
+		Enemy* enemy = nullptr;
 		if (batPool.empty())
 		{
-			bat = (Bat*)AddGameObject(new Bat());
-			bat->Init();
+			enemy = (Enemy*)AddGameObject(new Enemy());
+			enemy->Init();
 
 		}
 		else
 		{
-			bat = batPool.front();
+			enemy = batPool.front();
 			batPool.pop_front();
-			bat->SetActive(true);
+			enemy->SetActive(true);
 		}
-		//zombie->SetType((Zombie::Types)Utils::RandomRange(0, Zombie::TotalTypes));
-		bat->Reset();
-		bat->SetPosition(enemyPos[i]);
+		enemy->SetType(Enemy::Types::Bat);
+		enemy->Reset();
+		enemy->SetPosition(enemyPos[i]);
 
 
-		batList.push_back(bat);
+		batList.push_back(enemy);
 	}
 }

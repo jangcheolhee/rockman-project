@@ -2,16 +2,16 @@
 #include "Scene.h"
 class AniPlayer;
 class TileCollision;
-class Bat;
+class Enemy;
 class SceneGame : public Scene
 {
 protected:
 	AniPlayer* player;
-	Bat* bat;
+	Enemy* bat;
 	sf::Vector2f playerInitPos;
 	TileCollision* tileCollision;
-	std::list<Bat*> batList;
-	std::list<Bat*>batPool;
+	std::list<Enemy*> batList;
+	std::list<Enemy*>batPool;
 	std::vector<sf::Vector2f> enemyPos;
 	
 public:
@@ -23,6 +23,6 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window);
 	void SpawnBats(int count);
-	const std::list<Bat*>& GetBats() const { return batList; }
+	const std::list<Enemy*>& GetEnemies() const { return batList; }
 };
 

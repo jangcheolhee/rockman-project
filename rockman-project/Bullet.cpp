@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Bullet.h"
 #include "SceneGame.h"
-#include "Bat.h"
+#include "Enemy.h"
 Bullet::Bullet(const std::string& name)
 	: GameObject(name)
 {
@@ -78,7 +78,7 @@ void Bullet::Update(float dt)
 {
 	SetPosition(position + direction * speed * dt);
 	hitBox.UpdateTransform(body, GetLocalBounds());
-	const auto& list = sceneGame->GetBats();
+	const auto& list = sceneGame->GetEnemies();
 	for (auto bat : list)
 	{
 		if (Utils::CheckCollision(hitBox.rect, bat->GetHitBox().rect))
