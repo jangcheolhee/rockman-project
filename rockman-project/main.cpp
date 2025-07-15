@@ -2,7 +2,7 @@
 
 int main()
 {
-    FRAMEWORK.Init(1920, 1080, "TITLE!!");
+    FRAMEWORK.Init(800, 600, "TITLE!!");
     FRAMEWORK.Do();
     FRAMEWORK.Release();
 

@@ -4,6 +4,7 @@
 #include "AniPlayer.h"
 #include "SpriteGo.h"
 #include "TileCollision.h"
+#include "Bat.h"
 
 SceneGame::SceneGame() : Scene(SceneIds::Game)
 {
@@ -14,12 +15,16 @@ void SceneGame::Init()
 	texIds.push_back("graphics/megaman_sprite.png");
 	texIds.push_back("graphics/map.png");
 	texIds.push_back("graphics/WoodManStage.png");
+	texIds.push_back("graphics/bullet.png");
+	texIds.push_back("graphics/enemy.png");
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
 	ANI_CLIP_MGR.Load("animations/idle.csv");
 	ANI_CLIP_MGR.Load("animations/run.csv");
 	ANI_CLIP_MGR.Load("animations/jump.csv");
-
+	ANI_CLIP_MGR.Load("animations/shoot1.csv");
+	ANI_CLIP_MGR.Load("animations/shoot.csv");
+	ANI_CLIP_MGR.Load("animations/bat.csv");
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf");
 	go->SetString("Game");
 	go->SetCharacterSize(30);
@@ -32,6 +37,14 @@ void SceneGame::Init()
 	player = (AniPlayer*)AddGameObject(new AniPlayer());
 	playerInitPos = { 300,182 };
 
+	bat = (Bat*)AddGameObject(new Bat());
+
+	for (int i = 0; i < 100; i++)
+	{
+		Bat* bat = (Bat*)AddGameObject(new Bat());
+		bat->SetActive(false);
+		batPool.push_back(bat);
+	}
 	Scene::Init();
 }
 
@@ -43,6 +56,7 @@ void SceneGame::Enter()
 	uiView.setCenter(center);
 	
 	player->SetPosition(playerInitPos);
+	bat->SetPosition({ 300.f,200.f });
 	
 	worldView.setSize({512,160});
 	worldView.setCenter(player->GetPosition());
@@ -56,8 +70,10 @@ void SceneGame::Enter()
 	
 	AddGameObject(background);
 	
-
-
+	enemyPos.push_back({ 347.f,200.f });
+	enemyPos.push_back({ 419.f,180.f });
+	enemyPos.push_back({ 500.f,200.f });
+	SpawnBats(3);
 	Scene::Enter();
 }
 
@@ -67,10 +83,14 @@ void SceneGame::Update(float dt)
 	Scene::Update(dt);
 	worldView.setCenter(player->GetPosition());
 	sf::Vector2f pos = player->GetPosition();
-	std::cout << tileCollision->getTileType(pos.x, pos.y) << std::endl;
+	
 	if (tileCollision->getTileType(pos.x, pos.y) == TileType::BLOCK)
 	{
 		player->SetIsGround();
+	}
+	else if (tileCollision->getTileType(pos.x, pos.y) == TileType::LADDER)
+	{
+		//player->SetIsLadder();
 	}
 	
 }
@@ -80,4 +100,30 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	Scene::Draw(window);
 
 
+}
+
+void SceneGame::SpawnBats(int count)
+{
+	for (int i = 0; i < count; i++)
+	{
+		Bat* bat = nullptr;
+		if (batPool.empty())
+		{
+			bat = (Bat*)AddGameObject(new Bat());
+			bat->Init();
+
+		}
+		else
+		{
+			bat = batPool.front();
+			batPool.pop_front();
+			bat->SetActive(true);
+		}
+		//zombie->SetType((Zombie::Types)Utils::RandomRange(0, Zombie::TotalTypes));
+		bat->Reset();
+		bat->SetPosition(enemyPos[i]);
+
+
+		batList.push_back(bat);
+	}
 }

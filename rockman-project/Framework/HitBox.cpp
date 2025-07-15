@@ -22,6 +22,7 @@ void HitBox::Draw(sf::RenderWindow& window)
 {
 	if (Variables::isDrawHitBox)
 	{
+		
 		window.draw(rect);
 	}
 }

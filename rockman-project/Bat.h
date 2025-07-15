@@ -1,42 +1,24 @@
 #pragma once
+#include "GameObject.h"
 #include "Animator.h"
+#include "SceneGame.h"
 #include "HitBox.h"
-
-
-class SceneGame;
-class Bullet;
-
-class AniPlayer : public GameObject
+class Bat : public GameObject
 {
 protected:
 	sf::Sprite body;
 	Animator animator;
-
+	SceneGame* sceneGame = nullptr;
 	sf::Vector2f gravity = { 0.f, 500.f };
 	sf::Vector2f velocity = { 0.f, 0.f };
-	bool isGrounded = true;
-	bool isGround = false;
-	bool isLadder = false;
-	bool isShoot = false;
-	float speed = 100.f;
-	HitBox hitbox;
-	SceneGame* sceneGame = nullptr;
-	sf::Vector2f direction;
-	sf::Vector2f look;
-
-	std::list <Bullet*> bulletList;
-	std::list <Bullet*> bulletPool;
-
-	float shootInterval = 0.1f;
-	float shootTimer = 0.f;
-
+	HitBox hitBox;
+	int hp;
 
 public:
-	AniPlayer(const std::string& name = "");
-	~AniPlayer() = default;
+	Bat(const std::string& name = "");
+	~Bat() = default;
 
-	void SetIsGround() { isGround = true; }
-	void SetIsLadder() { isLadder = true; }
+
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float angle) override;
@@ -54,10 +36,13 @@ public:
 	{
 		return body.getGlobalBounds();
 	}
-	void Shoot();
+	
+	const HitBox& GetHitBox() const { return hitBox; }
+	void OnDamage(int damage);
 	void Init() override;
 	void Release() override;
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 };
+
