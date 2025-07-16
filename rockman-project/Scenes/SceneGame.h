@@ -19,6 +19,7 @@ protected:
 	std::vector<MapZone> mapZones;
 	AniPlayer* player;
 
+	int zoneID= -1;
 	sf::Vector2f center;
 	
 	sf::Vector2f playerInitPos;
@@ -45,7 +46,7 @@ public:
 
 
 
-	void SpawnBats(int count);
+	void SpawnEnemy(int count);
 	const std::list<Enemy*>& GetEnemies() const { return enemyList; }
 
 

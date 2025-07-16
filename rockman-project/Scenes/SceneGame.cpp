@@ -43,6 +43,7 @@ void SceneGame::UpdateZones()
 		if (nowInZone && !zone.entered)
 		{
 			zone.entered = true;
+			zoneID = zone.zoneId;
 			if (zone.onEnter) zone.onEnter();
 		}
 		else if (!nowInZone && zone.entered)
@@ -132,7 +133,21 @@ void SceneGame::Update(float dt)
 	Scene::Update(dt);
 	float x = Utils::Clamp(player->GetPosition().x, center.x, 4000);
 	float y = Utils::Clamp(player->GetPosition().y, 0, 800);
-	worldView.setCenter({x, y});
+	switch (zoneID)
+	{
+	case 1:
+		
+		worldView.setCenter({ x, y });
+		break;
+
+	case 2:
+		worldView.setCenter({ 600, 100 });
+		break;
+
+	}
+	
+	
+	
 	
 	CheckCollisions();
 	
@@ -147,7 +162,7 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 }
 
-void SceneGame::SpawnBats(int count)
+void SceneGame::SpawnEnemy(int count)
 {
 	for (int i = 0; i < count  - 5; i++)
 	{
