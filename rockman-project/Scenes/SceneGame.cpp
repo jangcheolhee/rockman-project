@@ -35,7 +35,9 @@ void SceneGame::InitZones()
 	  [this]()
 		{
 			std::cout << "Zone 1 Exit" << std::endl;
+			
 			ClearEnemy();
+
 		},
 	  false
 		});
@@ -47,6 +49,7 @@ void SceneGame::InitZones()
 		[this]()
 		{ 
 			std::cout << "Zone 2 Enter" << std::endl;
+			worldView.setCenter({ 1153,388 });
 			SpawnEnemy({ 1082.f , 368.f+25 }, Enemy::Types::Bat);
 			SpawnEnemy({ 1122, 385.f + 25 }, Enemy::Types::Bat);
 			SpawnEnemy({ 1153.f, 353.f + 25 }, Enemy::Types::Bat);
@@ -272,6 +275,7 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/bat.csv");
 	ANI_CLIP_MGR.Load("animations/bat2.csv");
 	ANI_CLIP_MGR.Load("animations/rabbit.csv");
+	ANI_CLIP_MGR.Load("animations/ladder.csv");
 
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf");
 	go->SetString("Game");
@@ -339,8 +343,18 @@ void SceneGame::Update(float dt)
 		break;
 
 	case 2:
-		worldView.setCenter({ 1153,388 });
-		break;
+	{
+		float minY = 250;
+		float maxY = minY + 255.f;
+
+		if (enemyList.size() != 0)
+		{
+			float clampedY = Utils::Clamp(player->GetPosition().y, minY, maxY);
+			player->SetPosition({ player->GetPosition().x, clampedY  });
+		}
+		
+	}
+	break;
 	case 3:
 		worldView.setCenter({ 1153,640 });
 		break;
@@ -378,7 +392,7 @@ void SceneGame::Update(float dt)
 		worldView.setCenter({ x, 1153 });
 		break;
 	}
-
+	CheckEnemy();
 	CheckCollisions();
 	UpdateZones();
 
@@ -389,6 +403,23 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	Scene::Draw(window);
 
 
+}
+
+void SceneGame::CheckEnemy()
+{
+	auto it = enemyList.begin();
+	while (it != enemyList.end())
+	{
+		if (!(*it)->GetActive())
+		{
+			enemyPool.push_back(*it);
+			it = enemyList.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
 }
 
 void SceneGame::SpawnEnemy(sf::Vector2f pos, Enemy::Types type)
@@ -420,7 +451,7 @@ void SceneGame::CheckCollisions()
 
 	if (tileCollision->getTileType(pos.x, pos.y) == TileType::BLOCK || tileCollision->getTileType(pos.x, pos.y) == TileType::LADDER)
 	{
-		player->SetIsGround();
+		player->SetIsGround(true);
 
 	}
 	// 위 충돌 검사
@@ -443,11 +474,11 @@ void SceneGame::CheckCollisions()
 	// 사다리 검사
 	if (tileCollision->getTileType(pos.x, pos.y + 1 ) == TileType::LADDER )
 	{
-		player->SetIsLadder();
+		player->SetIsLadder(true);
 	}
 	else
 	{
-		player->SetLadder();
+		player->SetIsLadder(false);
 	}
 }
 

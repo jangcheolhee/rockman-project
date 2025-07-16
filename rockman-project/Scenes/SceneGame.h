@@ -46,7 +46,7 @@ public:
 	void Draw(sf::RenderWindow& window);
 
 
-
+	void CheckEnemy();
 
 	void SpawnEnemy(sf::Vector2f pos, Enemy::Types type);
 	const std::list<Enemy*>& GetEnemies() const { return enemyList; }

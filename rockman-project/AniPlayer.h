@@ -13,11 +13,14 @@ public:
 	{
 		Default = -1,
 		Idle,
+		
 		Run,
 		Hurt,
 		Shoot,
 		Jump,
 		JumpShoot,
+		Ladder,
+		IdleShoot,
 		Count,
 	};
 protected:
@@ -44,15 +47,17 @@ protected:
 	int maxHp = 0;
 	int hp = 0;
 
+	float ladderTimer = 0;
+
 
 public:
 	AniPlayer(const std::string& name = "");
 	~AniPlayer() = default;
 
-	void SetIsGround() { isGround = true; }
+	void SetIsGround(bool ground) { isGround = ground; }
 	void SetIsGrounded() { isGrounded = true; }
-	void SetIsLadder() { isLadder = true; }
-	void SetLadder() { isLadder = false; }
+	void SetIsLadder(bool ladder) { isLadder = ladder; }
+	
 
 	void SetIsCeiling() {
 		velocity.y = 0.f;

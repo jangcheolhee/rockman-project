@@ -155,9 +155,17 @@ void AniPlayer::Update(float dt)
 	if (isGround)
 	{
 		if (isLadder)
-		{
+		{	
+			ladderTimer += dt;
+			
+			SetScale((int)ladderTimer % 2 == 0 ? sf::Vector2f(1.f, 1.f) : sf::Vector2f(-1.f, 1.f));
+			
+			
 			velocity.x = 0.f; // 사다리에서 x 이동 제한할 경우
 			velocity.y = v * speed;
+			animator.Play("animations/ladder.csv");
+			state = State::Ladder;
+
 		}
 		else
 		{
@@ -260,6 +268,23 @@ void AniPlayer::Update(float dt)
 
 	case State::Hurt:
 		// Hurt 처리 필요시 추가
+		break;
+	case State::Ladder:
+		if (!isLadder)
+		{
+			if (h == 0.f)
+			{
+				animator.Play("animations/idle.csv");
+				state = State::Idle;
+			}
+			else
+			{
+				animator.Play("animations/run.csv");
+				state = State::Run;
+			}
+		}
+		break;
+	case State::IdleShoot:
 		break;
 
 	default:
