@@ -47,9 +47,9 @@ void SceneGame::InitZones()
 		[this]()
 		{ 
 			std::cout << "Zone 2 Enter" << std::endl;
-			SpawnEnemy({ 1070.f, 340.f }, Enemy::Types::Bat);
-			SpawnEnemy({ 1090.f, 340.f }, Enemy::Types::Bat);
-			SpawnEnemy({ 1110.f, 300.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 1082.f , 368.f+25 }, Enemy::Types::Bat);
+			SpawnEnemy({ 1122, 385.f + 25 }, Enemy::Types::Bat);
+			SpawnEnemy({ 1153.f, 353.f + 25 }, Enemy::Types::Bat);
 		},
 		[this]()
 		{ 

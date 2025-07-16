@@ -88,6 +88,10 @@ void Bullet::Update(float dt)
 			break;
 		}
 	}
+	if (position.x < 0 || position.x > 4000)
+	{
+		SetActive(false);
+	}
 }
 
 void Bullet::Draw(sf::RenderWindow& window)

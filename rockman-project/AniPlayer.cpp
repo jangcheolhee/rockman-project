@@ -133,6 +133,19 @@ void AniPlayer::Update(float dt)
 		shootTimer = 0.f;
 		Shoot();
 	}
+	auto it = bulletList.begin();
+	while (it != bulletList.end())
+	{
+		if (!(*it)->GetActive())
+		{
+			bulletPool.push_back(*it);
+			it = bulletList.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
 
 	// 낙하 중인지 검사
 	if (!sceneGame->FloorCheck(GetPosition().x, GetPosition().y + 1))

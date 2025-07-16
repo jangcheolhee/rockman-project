@@ -115,13 +115,14 @@ void Enemy::Reset()
 void Enemy::Update(float dt)
 {
 	animator.Update(dt);
-	
+	float s = speed;
 	switch (type)
 	{
 	case Enemy::Types::Bat:
 
 		direction = Utils::GetNormal(player->GetPosition() - GetPosition());
-		if (Utils::Magnitude(player->GetPosition() - GetPosition()) >5 && Utils::Magnitude(player->GetPosition() - GetPosition()) < 20)
+		
+		if (Utils::Magnitude(player->GetPosition() - GetPosition()) >10 && Utils::Magnitude(player->GetPosition() - GetPosition()) < 100)
 		{
 			if (!isMove)
 			{
@@ -129,26 +130,23 @@ void Enemy::Update(float dt)
 				animator.Play("animations/bat.csv");
 			}
 			isMove = true;
-			if (direction.x < 0)
-			{
-				SetScale({ 1.f, -1.f });
-			}
-			else
-			{
-				SetScale({ 1.f, 1.f });
-			}
-			SetRotation(Utils::Angle(direction));
-			SetPosition(GetPosition() + direction * speed * dt);
+			
+			SetScale({ 1.f, 1.f });
+			
+			
 		}
 		else
 		{
+			s = 0;
 			if (!isMove)
 			{
-				scale.y *= -1;
+				
 				animator.Play("animations/bat2.csv");
+				
 			}
 			isMove = false;
 		}
+		SetPosition(GetPosition() + direction * s * dt);
 		break;
 	case Enemy::Types::Rabbit:
 
