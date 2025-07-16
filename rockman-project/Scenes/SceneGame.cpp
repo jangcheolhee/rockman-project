@@ -41,18 +41,80 @@ void SceneGame::InitZones()
 
 	// Zone 2
 	mapZones.push_back({
-		sf::FloatRect(1026, 250, 249, 267),
+		sf::FloatRect(1025, 250, 256, 256),
 		2,
 		[this]()
 		{ 
 			std::cout << "Zone 2 Enter" << std::endl;
-			SpawnEnemy({ 1070.f, 320.f }, Enemy::Types::Bat);
-			SpawnEnemy({ 1370.f, 320.f }, Enemy::Types::Bat);
-			SpawnEnemy({ 1270.f, 300.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 1070.f, 340.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 1090.f, 340.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 1110.f, 300.f }, Enemy::Types::Bat);
 		},
 		[this]()
 		{ 
 			std::cout << "Zone 2 Exit" << std::endl;
+			ClearEnemy();
+		},
+		false
+		});
+	// Zone 3
+	mapZones.push_back({
+		sf::FloatRect(1025, 515, 256, 256),
+		3,
+		[this]()
+		{
+			std::cout << "Zone 3 Enter" << std::endl;
+			
+		},
+		[this]()
+		{
+			std::cout << "Zone 3 Exit" << std::endl;
+			ClearEnemy();
+		},
+		false
+		});
+	mapZones.push_back({
+		sf::FloatRect(1281, 515, 256, 256),
+		4,
+		[this]()
+		{
+			std::cout << "Zone 4 Enter" << std::endl;
+
+		},
+		[this]()
+		{
+			std::cout << "Zone 4 Exit" << std::endl;
+			ClearEnemy();
+		},
+		false
+		});
+
+	mapZones.push_back({
+		sf::FloatRect(1537, 515, 256, 256),
+		5,
+		[this]()
+		{
+			std::cout << "Zone 5 Enter" << std::endl;
+
+		},
+		[this]()
+		{
+			std::cout << "Zone 5 Exit" << std::endl;
+			ClearEnemy();
+		},
+		false
+		});
+	mapZones.push_back({
+		sf::FloatRect(1793 + 256, 515, 256, 256),
+		6,
+		[this]()
+		{
+			std::cout << "Zone 5 Enter" << std::endl;
+
+		},
+		[this]()
+		{
+			std::cout << "Zone 5 Exit" << std::endl;
 			ClearEnemy();
 		},
 		false
@@ -157,17 +219,29 @@ void SceneGame::Update(float dt)
 {
 
 	Scene::Update(dt);
-	float x = Utils::Clamp(player->GetPosition().x, center.x, 4000);
-	float y = Utils::Clamp(player->GetPosition().y, 0, 800);
+	float x = Utils::Clamp(player->GetPosition().x, center.x, 1100);
+	
 	switch (zoneID)
 	{
 	case 1:
 
-		worldView.setCenter({ x, y });
+		worldView.setCenter({ x, 128 });
 		break;
 
 	case 2:
-		worldView.setCenter({ 1156,388 });
+		worldView.setCenter({ 1153,388 });
+		break;
+	case 3:
+		worldView.setCenter({ 1153,640 });
+		break;
+	case 4:
+		worldView.setCenter({ 1409,640 });
+		break;
+	case 5:
+		worldView.setCenter({ 1665,640 });
+		break;
+	case 6:
+		worldView.setCenter({ 1921,640 });
 		break;
 
 	}
@@ -203,6 +277,7 @@ void SceneGame::SpawnEnemy(sf::Vector2f pos, Enemy::Types type)
 	enemy->SetType(type);
 	enemy->Reset();
 	enemy->SetPosition(pos);
+	enemy->SetScale({ 1.f,1.f });
 
 
 	enemyList.push_back(enemy);
@@ -238,7 +313,7 @@ void SceneGame::CheckCollisions()
 	}
 
 	// 사다리 검사
-	if (tileCollision->getTileType(pos.x, pos.y + 1) == TileType::LADDER || tileCollision->getTileType(pos.x, pos.y - player->GetLocalBounds().height - 1) == TileType::LADDER)
+	if (tileCollision->getTileType(pos.x, pos.y + 1 ) == TileType::LADDER )
 	{
 		player->SetIsLadder();
 	}

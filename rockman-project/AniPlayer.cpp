@@ -161,7 +161,7 @@ void AniPlayer::Update(float dt)
 
 	// 위치 적용
 	position += velocity * dt;
-	position.x = Utils::Clamp(position.x, 150, 4000);
+	position.x = Utils::Clamp(position.x, 150, 8000);
 
 	SetPosition(position);
 

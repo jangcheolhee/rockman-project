@@ -121,7 +121,7 @@ void Enemy::Update(float dt)
 	case Enemy::Types::Bat:
 
 		direction = Utils::GetNormal(player->GetPosition() - GetPosition());
-		if (Utils::Magnitude(player->GetPosition() - GetPosition()) >20 && Utils::Magnitude(player->GetPosition() - GetPosition()) < 200)
+		if (Utils::Magnitude(player->GetPosition() - GetPosition()) >5 && Utils::Magnitude(player->GetPosition() - GetPosition()) < 20)
 		{
 			if (!isMove)
 			{
