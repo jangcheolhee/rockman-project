@@ -21,6 +21,7 @@ void SceneGame::InitZones()
 	  [this]()
 		{
 			std::cout << "Zone 1 Enter" << std::endl;
+			
 			SpawnEnemy({ 200.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 300.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 400.f,100.f }, Enemy::Types::Bat);
@@ -105,20 +106,52 @@ void SceneGame::InitZones()
 		false
 		});
 	mapZones.push_back({
-		sf::FloatRect(1793 + 256, 515, 256, 256),
+		sf::FloatRect(1793, 515, 256, 256),
 		6,
 		[this]()
 		{
-			std::cout << "Zone 5 Enter" << std::endl;
+			std::cout << "Zone 6 Enter" << std::endl;
 
 		},
 		[this]()
 		{
-			std::cout << "Zone 5 Exit" << std::endl;
+			std::cout << "Zone 6 Exit" << std::endl;
 			ClearEnemy();
 		},
 		false
 		});
+	mapZones.push_back({
+		sf::FloatRect(1793, 256, 256, 256),
+		7,
+		[this]()
+		{
+			std::cout << "Zone 7 Enter" << std::endl;
+
+		},
+		[this]()
+		{
+			std::cout << "Zone 7 Exit" << std::endl;
+			ClearEnemy();
+		},
+		false
+		});
+	mapZones.push_back({
+		sf::FloatRect(1793, 1, 1280, 254),
+		8,
+		[this]()
+		{
+			std::cout << "Zone 8 Enter" << std::endl;
+
+		},
+		[this]()
+		{
+			std::cout << "Zone 8 Exit" << std::endl;
+			ClearEnemy();
+			worldView.setCenter({ 1921,128 });
+		},
+		false
+		});
+	
 }
 
 void SceneGame::UpdateZones()
@@ -139,6 +172,7 @@ void SceneGame::UpdateZones()
 		{
 			zone.entered = false;
 			if (zone.onExit) zone.onExit();
+
 		}
 	}
 }
@@ -184,7 +218,15 @@ void SceneGame::Init()
 	player = (AniPlayer*)AddGameObject(new AniPlayer("AniPlayer"));
 	playerInitPos = { 140,0 };
 
+	SpriteGo* background = new SpriteGo("graphics/map.png");
+	background->sortingLayer = SortingLayers::Background;
+	background->sortingOrder = 0;
+	tileCollision = new TileCollision();
+	tileCollision->loadFromFile("graphics/WoodManStage.png");
+	AddGameObject(background);
+
 	InitZones();
+
 	Scene::Init();
 }
 
@@ -200,31 +242,32 @@ void SceneGame::Enter()
 	uiView.setCenter(center);
 	//World View
 	worldView.setSize({ 256,256 });
-	worldView.setCenter({ 123.f, 123.f });
+	worldView.setCenter({ 128.f, 128.f });
 
-	SpriteGo* background = new SpriteGo("graphics/map.png");
-	background->sortingLayer = SortingLayers::Background;
-	background->sortingOrder = 0;
-	tileCollision = new TileCollision();
-	tileCollision->loadFromFile("graphics/WoodManStage.png");
-	player->SetPosition(playerInitPos);
-
-	AddGameObject(background);
-
+	
+	
+	zoneID = 1;
+	
 
 	Scene::Enter();
+	player->SetPosition({ 100,50 });
+}
+
+void SceneGame::Exit()
+{
+	Scene::Exit();
 }
 
 void SceneGame::Update(float dt)
 {
 
 	Scene::Update(dt);
-	float x = Utils::Clamp(player->GetPosition().x, center.x, 1100);
+	float x = 0.f;
 	
 	switch (zoneID)
 	{
 	case 1:
-
+		x = Utils::Clamp(player->GetPosition().x, center.x, 1100);
 		worldView.setCenter({ x, 128 });
 		break;
 
@@ -242,6 +285,17 @@ void SceneGame::Update(float dt)
 		break;
 	case 6:
 		worldView.setCenter({ 1921,640 });
+		break;
+	case 7:
+		worldView.setCenter({ 1921,384 });
+		break;
+	case 8:
+		x = Utils::Clamp(player->GetPosition().x, 1921, 2935);
+		worldView.setCenter({ x, 128 });
+		if (player->GetPosition().x > 2048  && player->GetPosition().x < 2800 && player->GetPosition().y > 256)
+		{
+			SCENE_MGR.ChangeScene(SceneIds::Opening);
+		}
 		break;
 
 	}
@@ -278,12 +332,7 @@ void SceneGame::SpawnEnemy(sf::Vector2f pos, Enemy::Types type)
 	enemy->Reset();
 	enemy->SetPosition(pos);
 	enemy->SetScale({ 1.f,1.f });
-
-
 	enemyList.push_back(enemy);
-
-
-
 }
 
 void SceneGame::CheckCollisions()

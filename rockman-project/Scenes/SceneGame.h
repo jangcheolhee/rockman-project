@@ -41,6 +41,7 @@ public:
 
 	void Init() override;
 	void Enter() override;
+	void Exit() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window);
 

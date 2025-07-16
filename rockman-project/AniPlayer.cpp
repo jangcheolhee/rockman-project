@@ -41,7 +41,7 @@ void AniPlayer::SetOrigin(const sf::Vector2f& newOrigin)
 	origin = Utils::SetOrigin(body, originPreset);
 }
 
-void AniPlayer::Shoot()
+void AniPlayer::Shoot() // 충돌 되었을시 발사 불가
 {
 	Bullet* bullet = nullptr;
 
@@ -100,6 +100,8 @@ void AniPlayer::Reset()
 	bulletList.clear();
 
 	direction = { 0.f, 0.f };
+	velocity = { 0.f, 0.f };
+	isGrounded = false;
 }
 
 void AniPlayer::Update(float dt)
