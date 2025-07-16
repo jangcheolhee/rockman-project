@@ -152,15 +152,15 @@ void AniPlayer::Update(float dt)
 	{
 		velocity.x = 0.f; // 사다리에서 x 이동 제한할 경우
 		velocity.y = v * speed;
-		std::cout << velocity.y;
+		
 		
 	}
 
 	// 위치 적용
 	position += velocity * dt;
-	std::cout << position.y;
 
-	position.x = Utils::Clamp(position.x, 120, 4000);
+
+	position.x = Utils::Clamp(position.x, 150, 4000);
 
 	SetPosition(position);
 

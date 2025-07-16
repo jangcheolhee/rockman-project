@@ -51,7 +51,7 @@ void BasicPlayer::Reset()
 {
 	sortingLayer = SortingLayers::UI;
 	sortingOrder = 0;
-	SetScale({ 4.f,4.f });
+	
 	if (name == "Player")
 	{
 		animator.Play("animations/opening.csv");
@@ -59,6 +59,7 @@ void BasicPlayer::Reset()
 	else 
 	{
 		animator.Play("animations/opening.csv");
+		SetScale({ 4.f,4.f });
 	}
 	
 }

@@ -19,6 +19,8 @@ void SceneOpening::Init()
 
 void SceneOpening::Enter()
 {
+	worldView.setSize({ 256, 256 });
+	worldView.setCenter({ 123.f, 123.f });
 	
 	Scene::Enter();
 }
@@ -28,7 +30,7 @@ void SceneOpening::Update(float dt)
 	Scene::Update(dt);
 	if (InputMgr::GetKeyDown(sf::Keyboard::Return) || InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
-		SCENE_MGR.ChangeScene(SceneIds::Game);
+		SCENE_MGR.ChangeScene(SceneIds::Title);
 	}
 }
 void SceneOpening::Draw(sf::RenderWindow& window)

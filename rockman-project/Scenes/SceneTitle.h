@@ -1,11 +1,15 @@
 #pragma once
 #include "Scene.h"
 class BasicPlayer;
+class SpriteGo;
 
 class SceneTitle : public Scene
 {
 protected:
 	BasicPlayer* player;
+	SpriteGo* background;
+	float openTime = 0;
+
 public:
 	SceneTitle();
 
