@@ -213,6 +213,7 @@ void SceneGame::InitZones()
 			std::cout << "Zone 12 Exit" << std::endl;
 			
 			ClearEnemy();
+			SCENE_MGR.ChangeScene(SceneIds::Opening);
 
 		},
 		false
@@ -358,7 +359,7 @@ void SceneGame::Update(float dt)
 	case 8:
 		x = Utils::Clamp(player->GetPosition().x, 1921, 2935);
 		worldView.setCenter({ x, 128 });
-		if (player->GetPosition().x > 2048  && player->GetPosition().x < 2800 && player->GetPosition().y > 256)
+		if (player->GetPosition().x > 2048  && player->GetPosition().x < 2800 && player->GetPosition().y > 300)
 		{
 			SCENE_MGR.ChangeScene(SceneIds::Opening);
 		}
