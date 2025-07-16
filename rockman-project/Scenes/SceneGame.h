@@ -1,8 +1,9 @@
 #pragma once
 #include "Scene.h"
+#include "Enemy.h"
 class AniPlayer;
 class TileCollision;
-class Enemy;
+
 struct MapZone
 {
 	sf::FloatRect bounds; // 구간 영역 (x, y, width, height)
@@ -35,7 +36,7 @@ public:
 	
 	void InitZones();
 	void UpdateZones();
-
+	void ClearEnemy();
 
 
 	void Init() override;
@@ -46,7 +47,7 @@ public:
 
 
 
-	void SpawnEnemy(int count);
+	void SpawnEnemy(sf::Vector2f pos, Enemy::Types type);
 	const std::list<Enemy*>& GetEnemies() const { return enemyList; }
 
 

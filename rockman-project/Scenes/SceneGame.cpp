@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "SceneGame.h"
+
 #include "TextGo.h"
 #include "AniPlayer.h"
 #include "SpriteGo.h"
 #include "TileCollision.h"
-#include "Enemy.h"
+
 
 SceneGame::SceneGame() : Scene(SceneIds::Game)
 {
@@ -15,19 +16,45 @@ void SceneGame::InitZones()
 	mapZones.clear();
 
 	mapZones.push_back({
-	  sf::FloatRect(0, 0, 500, 800),
+	  sf::FloatRect(0, 0, 1273, 248),
 	  1,
-	  []() { std::cout << "Zone 1 Enter" << std::endl; },
-	  []() { std::cout << "Zone 1 Exit" << std::endl; },
+	  [this]()
+		{
+			std::cout << "Zone 1 Enter" << std::endl;
+			SpawnEnemy({ 200.f,100.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 300.f,100.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 400.f,100.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 500.f,100.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 600.f,100.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 700.f,100.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 800.f,100.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 1000.f,100.f }, Enemy::Types::Rabbit);
+			SpawnEnemy({ 800.f,100.f }, Enemy::Types::Rabbit);
+		},
+	  [this]()
+		{
+			std::cout << "Zone 1 Exit" << std::endl;
+			ClearEnemy();
+		},
 	  false
 		});
 
 	// Zone 2
 	mapZones.push_back({
-		sf::FloatRect(500, 0, 500, 800),
+		sf::FloatRect(1026, 250, 249, 267),
 		2,
-		[]() { std::cout << "Zone 2 Enter" << std::endl; },
-		[]() { std::cout << "Zone 2 Exit" << std::endl; },
+		[this]()
+		{ 
+			std::cout << "Zone 2 Enter" << std::endl;
+			SpawnEnemy({ 1070.f, 320.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 1370.f, 320.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 1270.f, 300.f }, Enemy::Types::Bat);
+		},
+		[this]()
+		{ 
+			std::cout << "Zone 2 Exit" << std::endl;
+			ClearEnemy();
+		},
 		false
 		});
 }
@@ -54,12 +81,19 @@ void SceneGame::UpdateZones()
 	}
 }
 
+void SceneGame::ClearEnemy()
+{
+	for (Enemy* enemy : enemyList)
+	{
+		enemy->SetActive(false);
+		enemyPool.push_back(enemy);
+	}
+	enemyList.clear();
+}
+
 void SceneGame::Init()
 {
 
-	
-
-	
 	texIds.push_back("graphics/megaman_sprite.png");
 	texIds.push_back("graphics/map.png");
 	texIds.push_back("graphics/WoodManStage.png");
@@ -84,18 +118,10 @@ void SceneGame::Init()
 	go->sortingOrder = 0;
 
 	AddGameObject(go);
-	
+
 	player = (AniPlayer*)AddGameObject(new AniPlayer("AniPlayer"));
 	playerInitPos = { 140,0 };
 
-	
-
-	for (int i = 0; i < 20; i++)
-	{
-		Enemy* bat = (Enemy*)AddGameObject(new Enemy());
-		bat->SetActive(false);
-		enemyPool.push_back(bat);
-	}
 	InitZones();
 	Scene::Init();
 }
@@ -107,20 +133,20 @@ void SceneGame::Enter()
 
 	//UI VIEW
 	auto size = FRAMEWORK.GetWindowSizeF();
-	center ={ size.x * 0.5f, size.y * 0.5f };
+	center = { size.x * 0.5f, size.y * 0.5f };
 	uiView.setSize(size);
 	uiView.setCenter(center);
 	//World View
-	worldView.setSize({256,256});
-	worldView.setCenter({123.f, 123.f});
-	
+	worldView.setSize({ 256,256 });
+	worldView.setCenter({ 123.f, 123.f });
+
 	SpriteGo* background = new SpriteGo("graphics/map.png");
 	background->sortingLayer = SortingLayers::Background;
 	background->sortingOrder = 0;
 	tileCollision = new TileCollision();
 	tileCollision->loadFromFile("graphics/WoodManStage.png");
 	player->SetPosition(playerInitPos);
-	
+
 	AddGameObject(background);
 
 
@@ -136,23 +162,19 @@ void SceneGame::Update(float dt)
 	switch (zoneID)
 	{
 	case 1:
-		
+
 		worldView.setCenter({ x, y });
 		break;
 
 	case 2:
-		worldView.setCenter({ 600, 100 });
+		worldView.setCenter({ 1156,388 });
 		break;
 
 	}
-	
-	
-	
-	
+
 	CheckCollisions();
-	
 	UpdateZones();
-	
+
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
@@ -162,53 +184,31 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 }
 
-void SceneGame::SpawnEnemy(int count)
+void SceneGame::SpawnEnemy(sf::Vector2f pos, Enemy::Types type)
 {
-	for (int i = 0; i < count  - 5; i++)
+
+	Enemy* enemy = nullptr;
+	if (enemyPool.empty())
 	{
-		Enemy* enemy = nullptr;
-		if (enemyPool.empty())
-		{
-			enemy = (Enemy*)AddGameObject(new Enemy());
-			enemy->Init();
+		enemy = (Enemy*)AddGameObject(new Enemy());
+		enemy->Init();
 
-		}
-		else
-		{
-			enemy = enemyPool.front();
-			enemyPool.pop_front();
-			enemy->SetActive(true);
-		}
-		enemy->SetType(Enemy::Types::Bat);
-		enemy->Reset();
-		enemy->SetPosition(enemyPos[i]);
-
-
-		enemyList.push_back(enemy);
 	}
-
-	for (int i = 5; i < count; i++)
+	else
 	{
-		Enemy* enemy = nullptr;
-		if (enemyPool.empty())
-		{
-			enemy = (Enemy*)AddGameObject(new Enemy());
-			enemy->Init();
-
-		}
-		else
-		{
-			enemy = enemyPool.front();
-			enemyPool.pop_front();
-			enemy->SetActive(true);
-		}
-		enemy->SetType(Enemy::Types::Rabbit);
-		enemy->Reset();
-		enemy->SetPosition(enemyPos[i]);
-
-
-		enemyList.push_back(enemy);
+		enemy = enemyPool.front();
+		enemyPool.pop_front();
+		enemy->SetActive(true);
 	}
+	enemy->SetType(type);
+	enemy->Reset();
+	enemy->SetPosition(pos);
+
+
+	enemyList.push_back(enemy);
+
+
+
 }
 
 void SceneGame::CheckCollisions()

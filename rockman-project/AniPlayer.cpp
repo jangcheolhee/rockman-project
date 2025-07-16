@@ -108,6 +108,7 @@ void AniPlayer::Update(float dt)
 
 	float h = InputMgr::GetAxis(Axis::Horizontal);
 	float v = InputMgr::GetAxis(Axis::Vertical);
+	
 
 	// 이동 처리
 	if (isGrounded)
@@ -138,8 +139,17 @@ void AniPlayer::Update(float dt)
 	
 	if (isGround)
 	{
-		velocity.y = 0.f;
-		position.y -= 0.1f;
+		if (isLadder)
+		{
+			velocity.x = 0.f; // 사다리에서 x 이동 제한할 경우
+			velocity.y = v * speed;
+		}
+		else
+		{
+			velocity.y = 0.f;
+			position.y -= 0.1f;
+		}
+		
 		isGround = false;
 		isGrounded = true;
 	}
@@ -148,18 +158,9 @@ void AniPlayer::Update(float dt)
 		velocity += gravity * dt;
 	}
 
-	if (isLadder)
-	{
-		velocity.x = 0.f; // 사다리에서 x 이동 제한할 경우
-		velocity.y = v * speed;
-		
-		
-	}
 
 	// 위치 적용
 	position += velocity * dt;
-
-
 	position.x = Utils::Clamp(position.x, 150, 4000);
 
 	SetPosition(position);

@@ -1,8 +1,9 @@
 #pragma once
 #include "GameObject.h"
 #include "Animator.h"
-#include "SceneGame.h"
+
 #include "HitBox.h"
+class SceneGame;
 class AniPlayer;
 class Enemy : public GameObject
 {
