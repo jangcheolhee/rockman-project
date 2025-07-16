@@ -136,7 +136,7 @@ void SceneGame::InitZones()
 		false
 		});
 	mapZones.push_back({
-		sf::FloatRect(1793, 1, 1280, 254),
+		sf::FloatRect(1793, 1, 1280, 256),
 		8,
 		[this]()
 		{
@@ -147,11 +147,77 @@ void SceneGame::InitZones()
 		{
 			std::cout << "Zone 8 Exit" << std::endl;
 			ClearEnemy();
-			worldView.setCenter({ 1921,128 });
+			
 		},
 		false
 		});
-	
+	mapZones.push_back({
+		sf::FloatRect(2817, 257, 256, 256),
+		9,
+		[this]()
+		{
+			std::cout << "Zone 9 Enter" << std::endl;
+
+		},
+		[this]()
+		{
+			std::cout << "Zone 9 Exit" << std::endl;
+			ClearEnemy();
+			
+		},
+		false
+		});
+	mapZones.push_back({
+		sf::FloatRect(2817, 513, 256, 256),
+		10,
+		[this]()
+		{
+			std::cout << "Zone 10 Enter" << std::endl;
+
+		},
+		[this]()
+		{
+			std::cout << "Zone 10 Exit" << std::endl;
+			ClearEnemy();
+			
+		},
+		false
+		});
+	mapZones.push_back({
+		sf::FloatRect(2817, 769, 256, 226),
+		11,
+		[this]()
+		{
+			std::cout << "Zone 11 Enter" << std::endl;
+
+		},
+		[this]()
+		{
+			std::cout << "Zone 11 Exit" << std::endl;
+			player->SetPosition({ 2857,1038 });
+			ClearEnemy();
+			
+		},
+		false
+		});
+	mapZones.push_back({
+		sf::FloatRect(2817, 1028, 752, 226),
+		12,
+		[this]()
+		{
+			std::cout << "Zone 12 Enter" << std::endl;
+
+		},
+		[this]()
+		{
+			std::cout << "Zone 12 Exit" << std::endl;
+			
+			ClearEnemy();
+
+		},
+		false
+		});
+
 }
 
 void SceneGame::UpdateZones()
@@ -297,7 +363,19 @@ void SceneGame::Update(float dt)
 			SCENE_MGR.ChangeScene(SceneIds::Opening);
 		}
 		break;
-
+	case 9:
+		worldView.setCenter({ 2945,384 });
+		break;
+	case 10:
+		worldView.setCenter({ 2945,640 });
+		break;
+	case 11:
+		worldView.setCenter({ 2945,860 });
+		break;
+	case 12:
+		x = Utils::Clamp(player->GetPosition().x, 2945, 3697);
+		worldView.setCenter({ x, 1153 });
+		break;
 	}
 
 	CheckCollisions();
