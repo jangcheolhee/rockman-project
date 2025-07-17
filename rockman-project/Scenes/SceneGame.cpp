@@ -5,6 +5,8 @@
 #include "AniPlayer.h"
 #include "SpriteGo.h"
 #include "TileCollision.h"
+#include "HpBar.h"
+
 
 
 SceneGame::SceneGame() : Scene(SceneIds::Game)
@@ -265,6 +267,8 @@ void SceneGame::Init()
 	texIds.push_back("graphics/WoodManStage.png");
 	texIds.push_back("graphics/bullet.png");
 	texIds.push_back("graphics/enemy.png");
+	texIds.push_back("graphics/energyBars.png");
+
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
 	ANI_CLIP_MGR.Load("animations/idle.csv");
@@ -295,7 +299,10 @@ void SceneGame::Init()
 	tileCollision = new TileCollision();
 	tileCollision->loadFromFile("graphics/WoodManStage.png");
 	AddGameObject(background);
-
+	
+	hpBar = new HpBar("graphics/energyBars.png");
+	AddGameObject(hpBar);
+	
 	InitZones();
 
 	Scene::Init();
@@ -322,6 +329,7 @@ void SceneGame::Enter()
 
 	Scene::Enter();
 	player->SetPosition({ 100,50 });
+	hpBar->SetHpBar(3);
 }
 
 void SceneGame::Exit()

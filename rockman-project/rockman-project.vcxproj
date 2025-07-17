@@ -151,6 +151,7 @@
     <ClCompile Include="Framework\InputMgr.cpp" />
     <ClCompile Include="Framework\SpriteGo.cpp" />
     <ClCompile Include="Framework\Scene.cpp" />
+    <ClCompile Include="HpBar.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BasicPlayer.cpp" />
     <ClCompile Include="Scenes\SceneEnding.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Framework\SpriteGo.h" />
     <ClInclude Include="Framework\Scene.h" />
     <ClInclude Include="BasicPlayer.h" />
+    <ClInclude Include="HpBar.h" />
     <ClInclude Include="Scenes\SceneEnding.h" />
     <ClInclude Include="Scenes\SceneOpening.h" />
     <ClInclude Include="Scenes\SceneGame.h" />

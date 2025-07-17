@@ -84,6 +84,12 @@
     <ClCompile Include="BasicPlayer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes\SceneEnding.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="HpBar.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\InputMgr.h">
@@ -162,6 +168,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="BasicPlayer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes\SceneEnding.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="HpBar.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

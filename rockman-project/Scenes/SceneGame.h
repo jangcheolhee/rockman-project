@@ -3,7 +3,7 @@
 #include "Enemy.h"
 class AniPlayer;
 class TileCollision;
-
+class HpBar;
 struct MapZone
 {
 	sf::FloatRect bounds; // 구간 영역 (x, y, width, height)
@@ -16,7 +16,8 @@ struct MapZone
 class SceneGame : public Scene
 {
 protected:
-
+	
+	HpBar* hpBar;
 	std::vector<MapZone> mapZones;
 	AniPlayer* player;
 
