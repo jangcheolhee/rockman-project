@@ -390,6 +390,22 @@ void SceneGame::Update(float dt)
 	CheckCollisions();
 	UpdateZones();
 
+#ifdef DEF_DEV
+	if (InputMgr::GetKeyDown(sf::Keyboard::F1))
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Game);
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::F2))
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Stage);
+	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::F3))
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Ending);
+	}
+#endif
+	
+
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
