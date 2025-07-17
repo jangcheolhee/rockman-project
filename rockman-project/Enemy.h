@@ -12,7 +12,7 @@ public:
 	{
 		Bat,
 		Rabbit,
-		Total,
+		Count,
 	};
 protected:
 	sf::Sprite body;

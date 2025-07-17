@@ -100,7 +100,7 @@ void Enemy::Reset()
 		isMove = true;
 		isGrounded = false;
 		break;
-	case Enemy::Types::Total:
+	case Enemy::Types::Count:
 		break;
 	default:
 		break;
@@ -133,6 +133,11 @@ void Enemy::Update(float dt)
 			
 			SetScale({ 1.f, 1.f });
 			
+			
+		}
+		else if (Utils::Magnitude(player->GetPosition() - GetPosition()) < 10)
+		{
+			player->OnDamage(2);
 			
 		}
 		else
@@ -186,8 +191,7 @@ void Enemy::Update(float dt)
 		}
 		SetPosition(position);
 		break;
-	case Enemy::Types::Total:
-		break;
+	
 	default:
 		break;
 	}

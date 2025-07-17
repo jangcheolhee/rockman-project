@@ -290,8 +290,7 @@ void SceneGame::Init()
 
 	AddGameObject(go);
 
-	player = (AniPlayer*)AddGameObject(new AniPlayer("AniPlayer"));
-	playerInitPos = { 140,0 };
+	
 
 	SpriteGo* background = new SpriteGo("graphics/map.png");
 	background->sortingLayer = SortingLayers::Background;
@@ -300,11 +299,12 @@ void SceneGame::Init()
 	tileCollision->loadFromFile("graphics/WoodManStage.png");
 	AddGameObject(background);
 	
-	hpBar = new HpBar("graphics/energyBars.png");
+	hpBar = new HpBar("HpBar");
 	AddGameObject(hpBar);
 	
 	InitZones();
-
+	player = (AniPlayer*)AddGameObject(new AniPlayer("AniPlayer"));
+	playerInitPos = { 140,0 };
 	Scene::Init();
 }
 
@@ -329,7 +329,7 @@ void SceneGame::Enter()
 
 	Scene::Enter();
 	player->SetPosition({ 100,50 });
-	hpBar->SetHpBar(3);
+	
 }
 
 void SceneGame::Exit()

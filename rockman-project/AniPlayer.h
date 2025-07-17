@@ -5,6 +5,7 @@
 
 class SceneGame;
 class Bullet;
+class HpBar;
 
 class AniPlayer : public GameObject
 {
@@ -24,6 +25,7 @@ public:
 		Count,
 	};
 protected:
+	HpBar* hpBar;
 	sf::Sprite body;
 	Animator animator;
 	State state;
@@ -44,13 +46,16 @@ protected:
 
 	float shootInterval = 0.1f;
 	float shootTimer = 0.f;
-	int maxHp = 0;
+	int maxHp = 28;
 	int hp = 0;
 
 	float ladderTimer = 0;
+	float damageTimer = 0;
 
 
-	float timer = 0;
+	float idleShootTimer = 0;
+
+	int life = 3;
 
 
 public:
@@ -93,6 +98,9 @@ public:
 	{
 		return body.getGlobalBounds();
 	}
+
+
+
 	void Shoot();
 	void Init() override;
 	void Release() override;

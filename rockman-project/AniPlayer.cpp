@@ -2,6 +2,7 @@
 #include "AniPlayer.h"
 #include "Bullet.h"
 #include "SceneGame.h"
+#include "HpBar.h"
 
 AniPlayer::AniPlayer(const std::string& name)
 	: GameObject(name)
@@ -63,7 +64,7 @@ void AniPlayer::Shoot() // 충돌 되었을시 발사 불가
 	bullet->Fire(pos, look, 1000.f, 50);
 	bulletList.push_back(bullet);
 	sceneGame->AddGameObject(bullet);
-	timer = 0;
+	idleShootTimer = 0;
 }
 
 void AniPlayer::Init()
@@ -89,7 +90,7 @@ void AniPlayer::Reset()
 	SetOrigin(Origins::BC);
 
 	state = State::Idle;
-	maxHp = 100;
+	
 	hp = maxHp;
 	look = { 1.f, 0.f };
 
@@ -103,11 +104,21 @@ void AniPlayer::Reset()
 	direction = { 0.f, 0.f };
 	velocity = { 0.f, 0.f };
 	isGrounded = false;
+	
+	hpBar = (HpBar*)SCENE_MGR.GetCurrentScene()->FindGameObject("HpBar");
+	hpBar->SetHpBar(maxHp - hp);
+
+	damageTimer = 0.f;
+	if (life == 0)
+	{
+		life = 3;
+	}
 }
 
 void AniPlayer::Update(float dt)
 {
 	animator.Update(dt);
+	damageTimer += dt;
 
 	float h = InputMgr::GetAxis(Axis::Horizontal);
 	float v = InputMgr::GetAxis(Axis::Vertical);
@@ -295,8 +306,8 @@ void AniPlayer::Update(float dt)
 		break;
 	case State::IdleShoot:
 
-		timer += dt;
-		if (timer > 0.3)
+		idleShootTimer += dt;
+		if (idleShootTimer > 0.3)
 		{
 			if (h == 0.f)
 			{
@@ -322,6 +333,31 @@ void AniPlayer::Update(float dt)
 	}
 
 	hitbox.UpdateTransform(body, GetLocalBounds());
+}
+
+void AniPlayer::OnDamage(int damage)
+{
+	if (damageTimer > 1)
+	{
+		damageTimer = 0;
+		hp = Utils::Clamp(hp - damage, 0, 28);
+		hpBar->SetHpBar(maxHp - hp);
+		if (hp == 0)
+		{
+			life -= 1;
+			if (life != 0)
+			{
+				SCENE_MGR.ChangeScene(SceneIds::Game);
+			}
+			else
+			{
+				SCENE_MGR.ChangeScene(SceneIds::Opening);
+			}
+			
+		}
+	}
+	
+	
 }
 
 void AniPlayer::Draw(sf::RenderWindow& window)
