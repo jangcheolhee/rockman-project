@@ -334,6 +334,8 @@ void SceneGame::Enter()
 
 void SceneGame::Exit()
 {
+	mapZones[zoneID - 1].entered = false;
+	if (mapZones[zoneID - 1].onExit) mapZones[zoneID - 1].onExit();
 	Scene::Exit();
 }
 
