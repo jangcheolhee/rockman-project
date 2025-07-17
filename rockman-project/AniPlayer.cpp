@@ -63,6 +63,7 @@ void AniPlayer::Shoot() // 충돌 되었을시 발사 불가
 	bullet->Fire(pos, look, 1000.f, 50);
 	bulletList.push_back(bullet);
 	sceneGame->AddGameObject(bullet);
+	timer = 0;
 }
 
 void AniPlayer::Init()
@@ -196,6 +197,7 @@ void AniPlayer::Update(float dt)
 	}
 
 	// 애니메이션 상태 전환
+	
 	switch (state)
 	{
 	case State::Idle:
@@ -203,6 +205,13 @@ void AniPlayer::Update(float dt)
 		{
 			animator.Play("animations/run.csv");
 			state = State::Run;
+		}
+		if (isShoot)
+		{
+			
+			
+			state = State::IdleShoot;
+			
 		}
 		break;
 
@@ -285,6 +294,27 @@ void AniPlayer::Update(float dt)
 		}
 		break;
 	case State::IdleShoot:
+
+		timer += dt;
+		if (timer > 0.3)
+		{
+			if (h == 0.f)
+			{
+				animator.Play("animations/idle.csv");
+				state = State::Idle;
+			}
+			else
+			{
+				animator.Play("animations/run.csv");
+				state = State::Run;
+			}
+		}
+		else
+		{
+			isShoot = false;
+			body.setTexture(TEXTURE_MGR.Get("graphics/megaman_sprite.png"));
+			body.setTextureRect({ 175,31, 26, 25 });
+		}
 		break;
 
 	default:

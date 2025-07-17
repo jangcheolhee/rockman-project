@@ -50,6 +50,9 @@ protected:
 	float ladderTimer = 0;
 
 
+	float timer = 0;
+
+
 public:
 	AniPlayer(const std::string& name = "");
 	~AniPlayer() = default;
