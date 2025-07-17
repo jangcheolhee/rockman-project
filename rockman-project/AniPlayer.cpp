@@ -287,7 +287,19 @@ void AniPlayer::Update(float dt)
 		break;
 
 	case State::Hurt:
-		// Hurt 처리 필요시 추가
+	{
+		sf::Color color = body.getColor();
+		color.a =  100; // 보였다 안보였다
+		body.setColor(color);
+		if(damageTimer >1)
+		{
+			state = State::Idle;
+			color.a = 255;
+			body.setColor(color);
+			animator.Play("animations/idle.csv");
+		}
+	}
+
 		break;
 	case State::Ladder:
 		if (!isLadder)
@@ -339,6 +351,7 @@ void AniPlayer::OnDamage(int damage)
 {
 	if (damageTimer > 1)
 	{
+		state = State::Hurt;
 		damageTimer = 0;
 		hp = Utils::Clamp(hp - damage, 0, 28);
 		hpBar->SetHpBar(maxHp - hp);
@@ -353,7 +366,6 @@ void AniPlayer::OnDamage(int damage)
 			{
 				SCENE_MGR.ChangeScene(SceneIds::Opening);
 			}
-			
 		}
 	}
 	
