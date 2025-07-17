@@ -353,6 +353,12 @@ void AniPlayer::OnDamage(int damage)
 	{
 		state = State::Hurt;
 		damageTimer = 0;
+
+		isGrounded = false;
+		velocity.y += -80.f;
+		velocity.x *= -1;
+		animator.Play("animations/jump.csv");
+
 		hp = Utils::Clamp(hp - damage, 0, 28);
 		hpBar->SetHpBar(maxHp - hp);
 		if (hp == 0)
