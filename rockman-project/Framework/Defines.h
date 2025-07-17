@@ -25,7 +25,7 @@ enum class SceneIds
 	Title,
 	Stage,
 	Game,
-	
+	Ending,
 	Count,
 };
 

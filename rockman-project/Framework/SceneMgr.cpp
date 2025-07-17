@@ -4,6 +4,7 @@
 #include "SceneTitle.h"
 #include "SceneGame.h"
 #include "SceneStage.h"
+#include "SceneEnding.h"
 
 void SceneMgr::Init()
 {
@@ -12,6 +13,7 @@ void SceneMgr::Init()
 	scenes.push_back(new SceneTitle());
 	scenes.push_back(new SceneStage());
 	scenes.push_back(new SceneGame());
+	scenes.push_back(new SceneEnding());
 	
 
 	for (auto scene : scenes)

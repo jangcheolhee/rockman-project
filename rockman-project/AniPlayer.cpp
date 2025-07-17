@@ -371,7 +371,7 @@ void AniPlayer::OnDamage(int damage)
 			}
 			else
 			{
-				SCENE_MGR.ChangeScene(SceneIds::Opening);
+				SCENE_MGR.ChangeScene(SceneIds::Ending);
 			}
 		}
 	}
