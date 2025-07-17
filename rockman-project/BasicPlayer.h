@@ -7,11 +7,13 @@ class BasicPlayer :
 protected:
 	sf::Sprite body;
 	Animator animator;
+	float speed = 0.f;
 
 public:
 	BasicPlayer(const std::string& name = "");
 	virtual ~BasicPlayer() = default;
 
+	void changeAni();
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float rot) override;
 	void SetScale(const sf::Vector2f& s) override;

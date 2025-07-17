@@ -35,6 +35,8 @@ protected:
 	bool isGround = false;
 	bool isLadder = false;
 	bool isShoot = false;
+	bool ladder = false;
+
 	float speed = 100.f;
 	HitBox hitbox;
 	SceneGame* sceneGame = nullptr;
@@ -49,6 +51,7 @@ protected:
 	int maxHp = 28;
 	int hp = 0;
 
+	bool isDamage = true;
 	float ladderTimer = 0;
 	float damageTimer = 0;
 
@@ -64,21 +67,21 @@ public:
 
 	void SetIsGround(bool ground) { isGround = ground; }
 	void SetIsGrounded() { isGrounded = true; }
-	void SetIsLadder(bool ladder) { isLadder = ladder; }
+	void SetIsLadder(bool ladde) { ladder = ladde; }
 	
-
+	void IsDamage() { isDamage = !isDamage; }
 	void SetIsCeiling() {
 		velocity.y = 0.f;
 		position.y += 1.f; 
 	}
 	void SetIsWallLeft() {
 		velocity.x = 0.f;
-		position.x += 1.f; 
+		position.x += 0.1f; 
 		
 	}
 	void SetIsWallRight() {
 		velocity.x = 0.f;
-		position.x -= 1.f; 
+		position.x -= 0.1f; 
 		
 	}
 

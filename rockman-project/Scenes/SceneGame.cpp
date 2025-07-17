@@ -24,7 +24,7 @@ void SceneGame::InitZones()
 		{
 			std::cout << "Zone 1 Enter" << std::endl;
 
-			SpawnEnemy({ 200.f,100.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 350.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 300.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 400.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 500.f,100.f }, Enemy::Types::Bat);
@@ -372,7 +372,7 @@ void SceneGame::Update(float dt)
 		worldView.setCenter({ x, 128 });
 		if (player->GetPosition().x > 2048 && player->GetPosition().x < 2800 && player->GetPosition().y > 300)
 		{
-			SCENE_MGR.ChangeScene(SceneIds::Opening);
+			player->OnDamage(50);
 		}
 		break;
 	}
@@ -402,6 +402,11 @@ void SceneGame::Update(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::F3))
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Ending);
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Comma))
+	{
+		player->IsDamage();
 	}
 #endif
 	
@@ -459,13 +464,13 @@ void SceneGame::CheckCollisions()
 {
 	sf::Vector2f pos = player->GetPosition();
 
-	if (tileCollision->getTileType(pos.x, pos.y) == TileType::BLOCK || tileCollision->getTileType(pos.x, pos.y) == TileType::LADDER)
+	if (tileCollision->getTileType(pos.x, pos.y) == TileType::BLOCK || tileCollision->getTileType(pos.x, pos.y+1) == TileType::LADDER)
 	{
 		player->SetIsGround(true);
 
 	}
 	// 위 충돌 검사
-	if (tileCollision->getTileType(pos.x, pos.y - player->GetLocalBounds().height - 1) == TileType::BLOCK)
+	if (tileCollision->getTileType(pos.x, pos.y - player->GetLocalBounds().height) == TileType::BLOCK)
 	{
 		player->SetIsCeiling();
 
@@ -482,7 +487,7 @@ void SceneGame::CheckCollisions()
 	}
 
 	// 사다리 검사
-	if (tileCollision->getTileType(pos.x, pos.y + 1) == TileType::LADDER)
+	if (tileCollision->getTileType(pos.x, pos.y + 1) == TileType::LADDER || tileCollision->getTileType(pos.x, pos.y - player->GetLocalBounds().height - 1) == TileType::LADDER)
 	{
 		player->SetIsLadder(true);
 	}

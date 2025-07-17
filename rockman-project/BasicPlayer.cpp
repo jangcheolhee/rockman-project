@@ -5,6 +5,15 @@ BasicPlayer::BasicPlayer(const std::string& name)
 {
 }
 
+void BasicPlayer::changeAni()
+{
+	if (name == "Player")
+	{
+		animator.Play("animations/equip.csv");
+
+	}
+}
+
 void BasicPlayer::SetPosition(const sf::Vector2f& pos)
 {
 	GameObject::SetPosition(pos);
@@ -41,6 +50,14 @@ void BasicPlayer::SetOrigin(Origins preset)
 void BasicPlayer::Init()
 {
 	animator.SetTarget(&body);
+
+
+	animator.AddEvent("Equip", 11,
+		[]()
+		{
+			SCENE_MGR.ChangeScene(SceneIds::Stage);
+		}
+	);
 }
 
 void BasicPlayer::Release()
@@ -51,23 +68,36 @@ void BasicPlayer::Reset()
 {
 	sortingLayer = SortingLayers::UI;
 	sortingOrder = 0;
-	
+	SetScale({ 4.f,4.f });
 	if (name == "Player")
 	{
-		animator.Play("animations/opening.csv");
+		animator.Play("animations/titleIdle.csv");
+		
 	}
 	else 
 	{
 		animator.Play("animations/opening.csv");
-		SetScale({ 4.f,4.f });
+		
 	}
+	speed = 0;
 	
 }
 
 void BasicPlayer::Update(float dt)
 {
+	if (name == "Player")
+	{
+		if (speed != 0)
+		{
+			sf::Vector2f pos = GetPosition();
+			pos.y = pos.y * speed * dt;
+			SetPosition(pos);
+		}
+		
+		
+	}
 	animator.Update(dt);
-	
+		
 }
 
 void BasicPlayer::Draw(sf::RenderWindow& window)

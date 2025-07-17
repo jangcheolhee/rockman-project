@@ -113,6 +113,7 @@ void AniPlayer::Reset()
 	{
 		life = 3;
 	}
+	ladder = false;
 }
 
 void AniPlayer::Update(float dt)
@@ -166,9 +167,13 @@ void AniPlayer::Update(float dt)
 	
 	if (isGround)
 	{
-		if (isLadder)
+		
+
+		
+		if (isLadder && ladder)
 		{	
-			ladderTimer += dt;
+			
+			ladderTimer += dt * 2 ;
 			
 			SetScale((int)ladderTimer % 2 == 0 ? sf::Vector2f(1.f, 1.f) : sf::Vector2f(-1.f, 1.f));
 			
@@ -179,10 +184,18 @@ void AniPlayer::Update(float dt)
 			state = State::Ladder;
 
 		}
+		else if (ladder)
+		{
+			if (InputMgr::GetKeyDown(sf::Keyboard::Up) || InputMgr::GetKeyDown(sf::Keyboard::Down))
+			{
+				isLadder = true;
+			}
+		}
 		else
 		{
 			velocity.y = 0.f;
 			position.y -= 0.1f;
+			isLadder = false;
 		}
 		
 		isGround = false;
@@ -309,6 +322,7 @@ void AniPlayer::Update(float dt)
 			{
 				animator.Play("animations/idle.csv");
 				state = State::Idle;
+				
 			}
 			else
 			{
@@ -350,33 +364,35 @@ void AniPlayer::Update(float dt)
 
 void AniPlayer::OnDamage(int damage)
 {
-	if (damageTimer > 1)
+	if (isDamage)
 	{
-		state = State::Hurt;
-		damageTimer = 0;
-
-		isGrounded = false;
-		velocity.y += -80.f;
-		velocity.x *= -1;
-		animator.Play("animations/jump.csv");
-
-		hp = Utils::Clamp(hp - damage, 0, 28);
-		hpBar->SetHpBar(maxHp - hp);
-		if (hp == 0)
+		if (damageTimer > 1)
 		{
-			life -= 1;
-			if (life != 0)
+			state = State::Hurt;
+			damageTimer = 0;
+
+			isGrounded = false;
+			velocity.y += -80.f;
+			velocity.x *= -1;
+			animator.Play("animations/jump.csv");
+
+			hp = Utils::Clamp(hp - damage, 0, 28);
+			hpBar->SetHpBar(maxHp - hp);
+			if (hp == 0)
 			{
-				SCENE_MGR.ChangeScene(SceneIds::Game);
-			}
-			else
-			{
-				SCENE_MGR.ChangeScene(SceneIds::Ending);
+				life -= 1;
+				if (life != 0)
+				{
+					SCENE_MGR.ChangeScene(SceneIds::Game);
+				}
+				else
+				{
+					SCENE_MGR.ChangeScene(SceneIds::Ending);
+				}
 			}
 		}
 	}
-	
-	
+
 }
 
 void AniPlayer::Draw(sf::RenderWindow& window)
