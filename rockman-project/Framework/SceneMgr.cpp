@@ -3,12 +3,14 @@
 #include "SceneOpening.h"
 #include "SceneTitle.h"
 #include "SceneGame.h"
+#include "SceneStage.h"
 
 void SceneMgr::Init()
 {
 
 	scenes.push_back(new SceneOpening());
 	scenes.push_back(new SceneTitle());
+	scenes.push_back(new SceneStage());
 	scenes.push_back(new SceneGame());
 	
 

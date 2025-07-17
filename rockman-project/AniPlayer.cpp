@@ -61,7 +61,7 @@ void AniPlayer::Shoot() // 충돌 되었을시 발사 불가
 	bullet->Reset();
 	sf::Vector2f pos = position + look * 10.f;
 	pos.y -= 10;
-	bullet->Fire(pos, look, 1000.f, 50);
+	bullet->Fire(pos, look, 800.f, 50);
 	bulletList.push_back(bullet);
 	sceneGame->AddGameObject(bullet);
 	idleShootTimer = 0;
@@ -293,10 +293,11 @@ void AniPlayer::Update(float dt)
 		body.setColor(color);
 		if(damageTimer >1)
 		{
-			state = State::Idle;
+			
 			color.a = 255;
 			body.setColor(color);
 			animator.Play("animations/idle.csv");
+			state = State::Idle;
 		}
 	}
 

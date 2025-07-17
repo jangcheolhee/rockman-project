@@ -324,7 +324,7 @@ void SceneGame::Enter()
 
 	
 	
-	zoneID = 1;
+	
 	
 
 	Scene::Enter();

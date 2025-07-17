@@ -23,6 +23,7 @@ enum class SceneIds
 	None = -1,
 	Opening,
 	Title,
+	Stage,
 	Game,
 	
 	Count,

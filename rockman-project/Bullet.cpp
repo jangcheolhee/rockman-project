@@ -67,11 +67,12 @@ void Bullet::Reset()
 	SetOrigin(Origins::ML);
 	SetPosition({ 0.f,0.f });
 	SetRotation(0.f);
-	SetScale({ 0.2f,0.2f });
+	SetScale({ 0.2f,0.4f });
 
 	direction = { 0.f,0.f };
 	speed = 1000.f;
 	damage = 0;
+	
 }
 
 void Bullet::Update(float dt)

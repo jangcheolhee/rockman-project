@@ -34,7 +34,7 @@ void SceneTitle::Update(float dt)
 	openTime += dt;
 	if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 	{
-		SCENE_MGR.ChangeScene(SceneIds::Game);
+		SCENE_MGR.ChangeScene(SceneIds::Stage);
 	}
 	if (openTime > 5)
 	{

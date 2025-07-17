@@ -154,6 +154,7 @@
     <ClCompile Include="HpBar.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BasicPlayer.cpp" />
+    <ClCompile Include="Scenes\SceneStage.cpp" />
     <ClCompile Include="Scenes\SceneEnding.cpp" />
     <ClCompile Include="Scenes\SceneOpening.cpp" />
     <ClCompile Include="Scenes\SceneGame.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Framework\Scene.h" />
     <ClInclude Include="BasicPlayer.h" />
     <ClInclude Include="HpBar.h" />
+    <ClInclude Include="Scenes\SceneStage.h" />
     <ClInclude Include="Scenes\SceneEnding.h" />
     <ClInclude Include="Scenes\SceneOpening.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
