@@ -23,7 +23,7 @@ void SceneGame::InitZones()
 	  [this]()
 		{
 			std::cout << "Zone 1 Enter" << std::endl;
-			
+
 			SpawnEnemy({ 200.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 300.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 400.f,100.f }, Enemy::Types::Bat);
@@ -37,7 +37,7 @@ void SceneGame::InitZones()
 	  [this]()
 		{
 			std::cout << "Zone 1 Exit" << std::endl;
-			
+
 			ClearEnemy();
 
 		},
@@ -49,15 +49,15 @@ void SceneGame::InitZones()
 		sf::FloatRect(1025, 250, 256, 256),
 		2,
 		[this]()
-		{ 
+		{
 			std::cout << "Zone 2 Enter" << std::endl;
 			worldView.setCenter({ 1153,388 });
-			SpawnEnemy({ 1082.f , 368.f+25 }, Enemy::Types::Bat);
+			SpawnEnemy({ 1082.f , 368.f + 25 }, Enemy::Types::Bat);
 			SpawnEnemy({ 1122, 385.f + 25 }, Enemy::Types::Bat);
 			SpawnEnemy({ 1153.f, 353.f + 25 }, Enemy::Types::Bat);
 		},
 		[this]()
-		{ 
+		{
 			std::cout << "Zone 2 Exit" << std::endl;
 			ClearEnemy();
 		},
@@ -70,7 +70,8 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 3 Enter" << std::endl;
-			
+			worldView.setCenter({ 1153,640 });
+
 		},
 		[this]()
 		{
@@ -84,6 +85,7 @@ void SceneGame::InitZones()
 		4,
 		[this]()
 		{
+			worldView.setCenter({ 1409,640 });
 			std::cout << "Zone 4 Enter" << std::endl;
 
 		},
@@ -100,6 +102,7 @@ void SceneGame::InitZones()
 		5,
 		[this]()
 		{
+			worldView.setCenter({ 1665,640 });
 			std::cout << "Zone 5 Enter" << std::endl;
 
 		},
@@ -116,7 +119,7 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 6 Enter" << std::endl;
-
+			worldView.setCenter({ 1921,640 });
 		},
 		[this]()
 		{
@@ -131,7 +134,7 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 7 Enter" << std::endl;
-
+			worldView.setCenter({ 1921,384 });
 		},
 		[this]()
 		{
@@ -152,7 +155,7 @@ void SceneGame::InitZones()
 		{
 			std::cout << "Zone 8 Exit" << std::endl;
 			ClearEnemy();
-			
+
 		},
 		false
 		});
@@ -162,13 +165,14 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 9 Enter" << std::endl;
+			worldView.setCenter({ 2945,384 });
 
 		},
 		[this]()
 		{
 			std::cout << "Zone 9 Exit" << std::endl;
 			ClearEnemy();
-			
+
 		},
 		false
 		});
@@ -178,13 +182,13 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 10 Enter" << std::endl;
-
+			worldView.setCenter({ 2945,640 });
 		},
 		[this]()
 		{
 			std::cout << "Zone 10 Exit" << std::endl;
 			ClearEnemy();
-			
+
 		},
 		false
 		});
@@ -194,14 +198,14 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 11 Enter" << std::endl;
-
+			worldView.setCenter({ 2945,860 });
 		},
 		[this]()
 		{
 			std::cout << "Zone 11 Exit" << std::endl;
 			player->SetPosition({ 2857,1038 });
 			ClearEnemy();
-			
+
 		},
 		false
 		});
@@ -216,9 +220,9 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 12 Exit" << std::endl;
-			
+
 			ClearEnemy();
-			SCENE_MGR.ChangeScene(SceneIds::Opening);
+			SCENE_MGR.ChangeScene(SceneIds::Ending);
 
 		},
 		false
@@ -290,7 +294,7 @@ void SceneGame::Init()
 
 	AddGameObject(go);
 
-	
+
 
 	SpriteGo* background = new SpriteGo("graphics/map.png");
 	background->sortingLayer = SortingLayers::Background;
@@ -298,10 +302,10 @@ void SceneGame::Init()
 	tileCollision = new TileCollision();
 	tileCollision->loadFromFile("graphics/WoodManStage.png");
 	AddGameObject(background);
-	
+
 	hpBar = new HpBar("HpBar");
 	AddGameObject(hpBar);
-	
+
 	InitZones();
 	player = (AniPlayer*)AddGameObject(new AniPlayer("AniPlayer"));
 	playerInitPos = { 140,0 };
@@ -322,14 +326,14 @@ void SceneGame::Enter()
 	worldView.setSize({ 256,256 });
 	worldView.setCenter({ 128.f, 128.f });
 
-	
-	
-	
-	
+
+
+
+
 
 	Scene::Enter();
 	player->SetPosition({ 100,50 });
-	
+
 }
 
 void SceneGame::Exit()
@@ -341,17 +345,15 @@ void SceneGame::Exit()
 
 void SceneGame::Update(float dt)
 {
-
 	Scene::Update(dt);
-	float x = 0.f;
-	
-	switch (zoneID)
+	switch (zoneID) // 맵에 제한 둘때만 사용하자 ex) 카메라 워킹 || 몬스터 잡아야 넘어가기
 	{
 	case 1:
-		x = Utils::Clamp(player->GetPosition().x, center.x, 1100);
+	{
+		float x = Utils::Clamp(player->GetPosition().x, center.x, 1100);
 		worldView.setCenter({ x, 128 });
 		break;
-
+	}
 	case 2:
 	{
 		float minY = 250;
@@ -360,47 +362,29 @@ void SceneGame::Update(float dt)
 		if (enemyList.size() != 0)
 		{
 			float clampedY = Utils::Clamp(player->GetPosition().y, minY, maxY);
-			player->SetPosition({ player->GetPosition().x, clampedY  });
+			player->SetPosition({ player->GetPosition().x, clampedY });
 		}
-		
+		break;
 	}
-	break;
-	case 3:
-		worldView.setCenter({ 1153,640 });
-		break;
-	case 4:
-		worldView.setCenter({ 1409,640 });
-		break;
-	case 5:
-		worldView.setCenter({ 1665,640 });
-		break;
-	case 6:
-		worldView.setCenter({ 1921,640 });
-		break;
-	case 7:
-		worldView.setCenter({ 1921,384 });
-		break;
 	case 8:
-		x = Utils::Clamp(player->GetPosition().x, 1921, 2935);
+	{
+		float x = Utils::Clamp(player->GetPosition().x, 1921, 2935);
 		worldView.setCenter({ x, 128 });
-		if (player->GetPosition().x > 2048  && player->GetPosition().x < 2800 && player->GetPosition().y > 300)
+		if (player->GetPosition().x > 2048 && player->GetPosition().x < 2800 && player->GetPosition().y > 300)
 		{
 			SCENE_MGR.ChangeScene(SceneIds::Opening);
 		}
 		break;
-	case 9:
-		worldView.setCenter({ 2945,384 });
-		break;
-	case 10:
-		worldView.setCenter({ 2945,640 });
-		break;
-	case 11:
-		worldView.setCenter({ 2945,860 });
-		break;
+	}
+		
+
 	case 12:
-		x = Utils::Clamp(player->GetPosition().x, 2945, 3697);
+	{
+		float x = Utils::Clamp(player->GetPosition().x, 2945, 3697);
 		worldView.setCenter({ x, 1153 });
 		break;
+	}
+
 	}
 	CheckEnemy();
 	CheckCollisions();
@@ -482,7 +466,7 @@ void SceneGame::CheckCollisions()
 	}
 
 	// 사다리 검사
-	if (tileCollision->getTileType(pos.x, pos.y + 1 ) == TileType::LADDER )
+	if (tileCollision->getTileType(pos.x, pos.y + 1) == TileType::LADDER)
 	{
 		player->SetIsLadder(true);
 	}
