@@ -49,7 +49,7 @@ public:
 
 	void CheckEnemy();
 
-
+	sf::FloatRect& GetZoneBounds();
 
 	Enemy* CreateEnemy(Enemy::Types type);
 

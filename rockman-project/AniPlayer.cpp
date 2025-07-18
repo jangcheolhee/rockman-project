@@ -3,6 +3,7 @@
 #include "Bullet.h"
 #include "SceneGame.h"
 #include "HpBar.h"
+#include <Particle.h>
 
 AniPlayer::AniPlayer(const std::string& name)
 	: GameObject(name)
@@ -113,13 +114,28 @@ void AniPlayer::Reset()
 	{
 		life = 3;
 	}
+	deadTimer = 0.f;
 	ladder = false;
+	isDead = false;
+	SetActive(true);
 }
 
 void AniPlayer::Update(float dt)
 {
 	animator.Update(dt);
 	damageTimer += dt;
+	if (isDead)
+	{
+		deadTimer += dt;
+		std::cout << deadTimer << std::endl;
+		if (deadTimer > 1.5f) // 1초 후 씬 전환
+		{
+			
+			SCENE_MGR.ChangeScene(SceneIds::Game);
+			std::cout << 1232435;
+		}
+		
+	}
 
 	float h = InputMgr::GetAxis(Axis::Horizontal);
 	float v = InputMgr::GetAxis(Axis::Vertical);
@@ -381,12 +397,38 @@ void AniPlayer::OnDamage(int damage)
 			if (hp == 0)
 			{
 				life -= 1;
+
 				if (life != 0)
 				{
-					SCENE_MGR.ChangeScene(SceneIds::Game);
+					isDead = true;
+					deadTimer = 0.f;
+					
+					// 죽는 장면 추가
+					const int directionCount = 10;
+					
+
+					float angleStep = 360.f / directionCount;
+
+					
+						for (int i = 0; i < directionCount; ++i)
+						{
+							float angle = angleStep * i;
+							float rad = Utils::DegreeToRadian(angle);
+							sf::Vector2f dir(cos(rad), sin(rad));
+
+							// 속도를 천천히 (예: * 50.f)
+							Particle* p = new Particle(position, dir * 50.f);
+							p->Init();
+							p->Reset();
+							sceneGame->AddGameObject(p);
+						}
+					
+					
+					//SCENE_MGR.ChangeScene(SceneIds::Game);
 				}
 				else
 				{
+					
 					SCENE_MGR.ChangeScene(SceneIds::Ending);
 				}
 			}

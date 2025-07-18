@@ -156,6 +156,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BasicPlayer.cpp" />
     <ClCompile Include="Enemy\RabbitEnemy.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Scenes\SceneStageChosen.cpp" />
     <ClCompile Include="Scenes\SceneStage.cpp" />
     <ClCompile Include="Scenes\SceneEnding.cpp" />
@@ -192,6 +193,7 @@
     <ClInclude Include="BasicPlayer.h" />
     <ClInclude Include="HpBar.h" />
     <ClInclude Include="Enemy\RabbitEnemy.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="Scenes\SceneStageChosen.h" />
     <ClInclude Include="Scenes\SceneStage.h" />
     <ClInclude Include="Scenes\SceneEnding.h" />

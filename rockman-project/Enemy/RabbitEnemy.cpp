@@ -13,6 +13,8 @@ void RabbitEnemy::Reset()
 	Enemy::Reset();
 	animator.Play("animations/rabbit.csv");
 	isGrounded = false;
+	move = true;
+	attack = 0;
 	
 
 }
@@ -28,7 +30,7 @@ void RabbitEnemy::UpdateBehavior(float dt)
 	}
 
 	position += velocity * dt;
-	position.x = Utils::Clamp(position.x, 70, 4000);
+	position.x = Utils::Clamp(position.x, sceneGame->GetZoneBounds().left + GetLocalBounds().width / 2, sceneGame->GetZoneBounds().left + sceneGame->GetZoneBounds().width - GetLocalBounds().width / 2);
 	if (sceneGame->FloorCheck(GetPosition().x, GetPosition().y + 1))
 	{
 		velocity.y = 0.f;
@@ -36,8 +38,8 @@ void RabbitEnemy::UpdateBehavior(float dt)
 		position.y -= 0.1f;
 		isGrounded = true;
 	}
-	moveTimer += dt;
-	if (moveTimer > moveInetrval)
+	
+	if (move)
 	{
 		if (direction.x < 0)
 		{
@@ -50,7 +52,7 @@ void RabbitEnemy::UpdateBehavior(float dt)
 		}
 		velocity.y = -150.f;
 		isGrounded = false;
-		moveTimer = 0;
+		move = false;
 	}
 	SetPosition(position);
 

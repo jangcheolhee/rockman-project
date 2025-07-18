@@ -61,6 +61,9 @@ protected:
 	int life = 3;
 
 
+	bool isDead = false;
+	float deadTimer = 0.f;
+
 public:
 	AniPlayer(const std::string& name = "");
 	~AniPlayer() = default;

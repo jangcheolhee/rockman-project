@@ -33,7 +33,7 @@ void BatEnemy::UpdateBehavior(float dt)
 	}
 	else if (Utils::Magnitude(player->GetPosition() - GetPosition()) < 10)
 	{
-		player->OnDamage(2);
+		player->OnDamage(20);
 		SetPosition({ position.x, 80 });
 
 	}

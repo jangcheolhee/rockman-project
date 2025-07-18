@@ -263,7 +263,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/bullet.png");
 	texIds.push_back("graphics/enemy.png");
 	texIds.push_back("graphics/energyBars.png");
-
+	texIds.push_back("graphics/megaman3.png");
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
 	ANI_CLIP_MGR.Load("animations/idle.csv");
@@ -275,6 +275,7 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/bat2.csv");
 	ANI_CLIP_MGR.Load("animations/rabbit.csv");
 	ANI_CLIP_MGR.Load("animations/ladder.csv");
+	ANI_CLIP_MGR.Load("animations/particle.csv");
 
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf");
 	go->SetString("Game");
@@ -444,8 +445,9 @@ void SceneGame::CheckEnemy()
 
 			if (!(*it)->GetActive() && (*it)->IsAlive())
 			{
-				(*it)->Reset();
+				
 				(*it)->SetActive(true);
+				(*it)->Reset();
 
 			}
 		}
@@ -461,6 +463,11 @@ void SceneGame::CheckEnemy()
 		}
 		it++;
 	}
+}
+sf::FloatRect& SceneGame::GetZoneBounds()
+{
+	// TODO: 여기에 return 문을 삽입합니다.
+	return mapZones[zoneID - 1].bounds;
 }
 void SceneGame::DeleteEnemy()
 {

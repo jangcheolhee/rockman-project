@@ -4,6 +4,9 @@ class RabbitEnemy : public Enemy
 {
 protected:
 	bool isGrounded = false;
+	bool move = false;
+	int attack = 3;
+
 
 public:
 	void Init() override;
