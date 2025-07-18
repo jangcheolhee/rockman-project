@@ -18,7 +18,7 @@ void SceneStageChosen::Init()
 	ANI_CLIP_MGR.Load("animations/woodMan1.csv");
 
 	SpriteGo* background = new SpriteGo("graphics/stageSprite.png");
-	background->GetSprite().setTextureRect({775,21,256,256});
+	background->GetSprite().setTextureRect({776,21,256,256});
 	background->sortingLayer = SortingLayers::Background;
 	background->sortingOrder = 0;
 	AddGameObject(background);

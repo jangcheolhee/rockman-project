@@ -1,19 +1,13 @@
 #pragma once
 #include "GameObject.h"
 #include "Animator.h"
-
 #include "HitBox.h"
+
 class SceneGame;
 class AniPlayer;
 class Enemy : public GameObject
 {
-public:
-	enum class Types
-	{
-		Bat,
-		Rabbit,
-		Count,
-	};
+
 protected:
 	sf::Sprite body;
 	Animator animator;
@@ -21,14 +15,10 @@ protected:
 	sf::Vector2f gravity = { 0.f, 500.f };
 	sf::Vector2f velocity = { 0.f, 0.f };
 	HitBox hitBox;
-	int hp;
-	Types type = Types::Bat;
-	AniPlayer* player;
+	int hp = 0;
 	float speed = 0.f;
 
 	sf::Vector2f direction;
-	bool isMove = false;
-	bool isGrounded = false;
 	float moveInetrval = 0.f;
 	float moveTimer = 0.f;
 
@@ -62,7 +52,5 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
-
-	void SetType(Types type);
 };
 
