@@ -350,7 +350,7 @@ void SceneGame::Update(float dt)
 		auto it = enemyList.begin();
 		while (it != enemyList.end())
 		{
-			if (!(*it)->GetActive())
+			if ((*it)->GetActive())
 			{
 
 				success = false;
