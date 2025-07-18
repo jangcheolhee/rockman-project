@@ -112,7 +112,7 @@ void SceneStage::Update(float dt)
 		switch (stage) 
 		{
 		case 5:
-			SCENE_MGR.ChangeScene(SceneIds::Game);
+			SCENE_MGR.ChangeScene(SceneIds::Chosen);
 			break;
 		}
 

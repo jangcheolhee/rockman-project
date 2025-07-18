@@ -44,6 +44,7 @@ void SceneStageChosen::Enter()
 	
 	music.openFromFile("sounds/Stage Chosen.flac");
 	music.play();
+	timer = 0;
 
 }
 
@@ -55,6 +56,10 @@ void SceneStageChosen::Exit()
 
 void SceneStageChosen::Update(float dt)
 {
+	timer += dt;
+	if (timer > 6) {
+		SCENE_MGR.ChangeScene(SceneIds::Game);
+	}
 	Scene::Update(dt);
 }
 void SceneStageChosen::Draw(sf::RenderWindow& window)

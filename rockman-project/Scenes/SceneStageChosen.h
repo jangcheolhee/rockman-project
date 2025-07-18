@@ -8,6 +8,7 @@ protected:
 	
 	BasicPlayer* boss;
 	sf::Music music;
+	float timer;
 public:
 
 	SceneStageChosen();

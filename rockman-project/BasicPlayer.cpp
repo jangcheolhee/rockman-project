@@ -57,13 +57,6 @@ void BasicPlayer::Init()
 {
 	animator.SetTarget(&body);
 
-	animator.AddEvent("WoodMan1", 20,
-		[this]()
-		{
-
-			SCENE_MGR.ChangeScene(SceneIds::Game);
-		}
-	);
 
 	animator.AddEvent("Equip", 12,
 		[this]()
