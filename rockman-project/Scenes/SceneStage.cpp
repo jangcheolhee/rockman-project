@@ -36,7 +36,15 @@ void SceneStage::Enter()
 	isFlash = true;
 	flashTime = 0;
 	stage = 4;
+	music.openFromFile("sounds/Stage Select.flac");
+	music.play();
 	Scene::Enter();
+}
+
+void SceneStage::Exit()
+{
+	music.stop();
+	Scene::Exit();
 }
 
 void SceneStage::Update(float dt)

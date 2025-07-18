@@ -21,8 +21,15 @@ void SceneOpening::Enter()
 {
 	worldView.setSize({ 256, 256 });
 	worldView.setCenter({ 123.f, 123.f });
-	
+	music.openFromFile("sounds/Opening.flac");
+	music.play();
 	Scene::Enter();
+}
+
+void SceneOpening::Exit()
+{
+	music.stop();
+	Scene::Exit();
 }
 
 void SceneOpening::Update(float dt)

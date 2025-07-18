@@ -13,6 +13,8 @@ protected:
 
 	float flashTime = 0.f;
 	bool isFlash = false;
+	sf::Music music;
+	bool isNext = false;
 
 public:
 	SceneEnding();

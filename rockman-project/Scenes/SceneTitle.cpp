@@ -38,11 +38,18 @@ void SceneTitle::Init()
 void SceneTitle::Enter()
 {
 	Scene::Enter();
-	
+	music.openFromFile("sounds/Title Screen.flac");
+	music.play();
 	
 	player->SetPosition({ 760,410 });
 	openTime = 0; 
 
+}
+
+void SceneTitle::Exit()
+{
+	music.stop();
+	Scene::Exit();
 }
 
 void SceneTitle::Update(float dt)
@@ -55,7 +62,7 @@ void SceneTitle::Update(float dt)
 		//SCENE_MGR.ChangeScene(SceneIds::Stage);
 	}
 	openTime += dt;
-	if (openTime > 5)
+	if (openTime > 42)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Opening);
 	}

@@ -36,20 +36,29 @@ void SceneEnding::Enter()
 	select = 0;
 	cursor->SetPosition(pos);
 	cursor->SetActive(false);
+	music.openFromFile("sounds/Game Over.flac");
+	music.play();
 }
 
 void SceneEnding::Exit()
 {
+	music.stop();
 	Scene::Exit();
 }
 
 void SceneEnding::Update(float dt)
 {
 	timer += dt;
-	if (timer > 3.5 && timer < 4) 
+	if (timer > 2) 
 	{
 		background->GetSprite().setTextureRect({1044,282,256,256});
 		cursor->SetActive(true);
+		if (!isNext)
+		{
+			
+			music.openFromFile("sounds/Stage Select.flac");
+			music.play();
+		}
 	}
 
 	flashTime += dt;
