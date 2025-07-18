@@ -13,17 +13,19 @@ void SceneOpening::Init()
 	texIds.push_back("graphics/TitleScreen.png");
 
 	ANI_CLIP_MGR.Load("animations/opening.csv");
+
 	AddGameObject(new BasicPlayer("Opening"));
 	Scene::Init();
 }
 
 void SceneOpening::Enter()
 {
-	worldView.setSize({ 256, 256 });
-	worldView.setCenter({ 128.f, 128.f });
+	
 	music.openFromFile("sounds/Opening.flac");
 	music.play();
 	Scene::Enter();
+	worldView.setSize({ 256, 256 });
+	worldView.setCenter({ 128.f, 128.f });
 }
 
 void SceneOpening::Exit()

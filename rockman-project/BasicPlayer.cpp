@@ -51,10 +51,17 @@ void BasicPlayer::Init()
 {
 	animator.SetTarget(&body);
 
-
-	animator.AddEvent("Equip", 11,
-		[]()
+	animator.AddEvent("Equip", 12,
+		[this]()
 		{
+
+			speed = -100;
+		}
+	);
+	animator.AddEvent("Equip", 15,
+		[this]()
+		{
+			
 			SCENE_MGR.ChangeScene(SceneIds::Stage);
 		}
 	);
@@ -66,9 +73,8 @@ void BasicPlayer::Release()
 
 void BasicPlayer::Reset()
 {
-	sortingLayer = SortingLayers::UI;
-	sortingOrder = 0;
-	SetScale({ 4.f,4.f });
+	
+	
 	if (name == "Player")
 	{
 		animator.Play("animations/titleIdle.csv");
@@ -79,7 +85,7 @@ void BasicPlayer::Reset()
 		animator.Play("animations/opening.csv");
 		
 	}
-	speed = 0;
+
 	
 }
 
@@ -90,7 +96,7 @@ void BasicPlayer::Update(float dt)
 		if (speed != 0)
 		{
 			sf::Vector2f pos = GetPosition();
-			pos.y = pos.y * speed * dt;
+			pos.y = pos.y + speed * dt;
 			SetPosition(pos);
 		}
 		

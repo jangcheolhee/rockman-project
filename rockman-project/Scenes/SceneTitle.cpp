@@ -29,6 +29,8 @@ void SceneTitle::Init()
 	
 	AddGameObject(background);
 	player = (BasicPlayer*)AddGameObject(new BasicPlayer("Player"));
+	background->sortingLayer = SortingLayers::Foreground;
+	background->sortingOrder = 1;
 	player->SetOrigin(Origins::BC);
 	
 	AddGameObject(player);
@@ -37,14 +39,15 @@ void SceneTitle::Init()
 
 void SceneTitle::Enter()
 {
+	worldView.setSize({ 256,256 });
+	worldView.setCenter({ 128.f, 128.f });
 	Scene::Enter();
 	music.openFromFile("sounds/Title Screen.flac");
 	music.play();
 	
-	player->SetPosition({ 760,410 });
+	player->SetPosition({ 190,103 });
 	openTime = 0; 
-	worldView.setSize({ 256,256 });
-	worldView.setCenter({ 128.f, 128.f });
+	
 }
 
 void SceneTitle::Exit()
