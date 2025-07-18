@@ -6,7 +6,7 @@
 #include "SpriteGo.h"
 #include "TileCollision.h"
 #include "HpBar.h"
-
+#include "BatEnemy.h"
 
 
 SceneGame::SceneGame() : Scene(SceneIds::Game)
@@ -31,14 +31,12 @@ void SceneGame::InitZones()
 			SpawnEnemy({ 600.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 700.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 800.f,100.f }, Enemy::Types::Bat);
-			SpawnEnemy({ 1000.f,100.f }, Enemy::Types::Rabbit);
-			SpawnEnemy({ 800.f,100.f }, Enemy::Types::Rabbit);
 		},
 	  [this]()
 		{
 			std::cout << "Zone 1 Exit" << std::endl;
 
-			ClearEnemy();
+			DeleteEnemy();
 
 		},
 	  false
@@ -59,7 +57,7 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 2 Exit" << std::endl;
-			ClearEnemy();
+			DeleteEnemy();
 		},
 		false
 		});
@@ -76,7 +74,7 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 3 Exit" << std::endl;
-			ClearEnemy();
+			DeleteEnemy();
 		},
 		false
 		});
@@ -92,7 +90,7 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 4 Exit" << std::endl;
-			ClearEnemy();
+			DeleteEnemy();
 		},
 		false
 		});
@@ -109,7 +107,7 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 5 Exit" << std::endl;
-			ClearEnemy();
+			DeleteEnemy();
 		},
 		false
 		});
@@ -124,7 +122,7 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 6 Exit" << std::endl;
-			ClearEnemy();
+			DeleteEnemy();
 		},
 		false
 		});
@@ -139,7 +137,7 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 7 Exit" << std::endl;
-			ClearEnemy();
+			DeleteEnemy();
 		},
 		false
 		});
@@ -154,7 +152,7 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 8 Exit" << std::endl;
-			ClearEnemy();
+			DeleteEnemy();
 
 		},
 		false
@@ -171,7 +169,7 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 9 Exit" << std::endl;
-			ClearEnemy();
+			DeleteEnemy();
 
 		},
 		false
@@ -187,7 +185,7 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 10 Exit" << std::endl;
-			ClearEnemy();
+			DeleteEnemy();
 
 		},
 		false
@@ -204,7 +202,7 @@ void SceneGame::InitZones()
 		{
 			std::cout << "Zone 11 Exit" << std::endl;
 			player->SetPosition({ 2857,1038 });
-			ClearEnemy();
+			DeleteEnemy();
 
 		},
 		false
@@ -221,7 +219,7 @@ void SceneGame::InitZones()
 		{
 			std::cout << "Zone 12 Exit" << std::endl;
 
-			ClearEnemy();
+			DeleteEnemy();
 			SCENE_MGR.ChangeScene(SceneIds::Ending);
 
 		},
@@ -253,15 +251,7 @@ void SceneGame::UpdateZones()
 	}
 }
 
-void SceneGame::ClearEnemy()
-{
-	for (Enemy* enemy : enemyList)
-	{
-		enemy->SetActive(false);
-		enemyPool.push_back(enemy);
-	}
-	enemyList.clear();
-}
+
 
 void SceneGame::Init()
 {
@@ -356,10 +346,25 @@ void SceneGame::Update(float dt)
 	}
 	case 2:
 	{
+		bool success = true;
+		auto it = enemyList.begin();
+		while (it != enemyList.end())
+		{
+			if (!(*it)->GetActive())
+			{
+
+				success = false;
+				
+			}
+
+			std::cout << (*it)->GetActive();
+			it++;
+		}
+		std::cout << success <<std::endl;
 		float minY = 250;
 		float maxY = minY + 255.f;
 
-		if (enemyList.size() != 0)
+		if (!success)
 		{
 			float clampedY = Utils::Clamp(player->GetPosition().y, minY, maxY);
 			player->SetPosition({ player->GetPosition().x, clampedY });
@@ -422,41 +427,84 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 void SceneGame::CheckEnemy()
 {
+	
+	sf::FloatRect view(
+		worldView.getCenter().x - worldView.getSize().x / 2.f,
+		worldView.getCenter().y - worldView.getSize().y / 2.f,
+		worldView.getSize().x,
+		worldView.getSize().y
+	);
 	auto it = enemyList.begin();
 	while (it != enemyList.end())
 	{
-		if (!(*it)->GetActive())
+		
+		if (view.contains((*it)->GetPosition()) )
 		{
-			enemyPool.push_back(*it);
-			it = enemyList.erase(it);
+
+			if (!(*it)->GetActive() && (*it)->IsAlive())
+			{
+				(*it)->Reset();
+				(*it)->SetActive(true);
+
+			}
 		}
 		else
 		{
-			it++;
+			(*it)->SetAlive(true);
+			if ((*it)->GetActive())
+			{
+				(*it)->SetActive(false);
+				
+			}
+		
 		}
+		it++;
 	}
+}
+void SceneGame::DeleteEnemy()
+{
+	auto it = enemyList.begin();
+	while (it != enemyList.end())
+	{
+		RemoveGameObject(*it);
+		it = enemyList.erase(it);
+		
+		
+	}
+	
+}
+
+Enemy* SceneGame::CreateEnemy(Enemy::Types type)
+{
+	Enemy* enemy = nullptr;
+
+	switch (type)
+	{
+	case Enemy::Types::Bat:
+		enemy = new BatEnemy();
+		break;
+
+	case Enemy::Types::Rabbit:
+	
+		break;
+
+	default:
+		break;
+	}
+
+	enemy->Init();
+	return enemy;
 }
 
 void SceneGame::SpawnEnemy(sf::Vector2f pos, Enemy::Types type)
 {
 
-	Enemy* enemy = nullptr;
-	if (enemyPool.empty())
-	{
-		enemy = (Enemy*)AddGameObject(new Enemy());
-		enemy->Init();
-
-	}
-	else
-	{
-		enemy = enemyPool.front();
-		enemyPool.pop_front();
-		enemy->SetActive(true);
-	}
+	Enemy* enemy = CreateEnemy(type);
+	enemy->SetInitPosition(pos);
 	enemy->SetType(type);
 	enemy->Reset();
-	enemy->SetPosition(pos);
-	enemy->SetScale({ 1.f,1.f });
+	enemy->SetActive(false);
+	AddGameObject(enemy);
 	enemyList.push_back(enemy);
 }
 

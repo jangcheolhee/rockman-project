@@ -28,7 +28,7 @@ void SceneStageChosen::Init()
 	boss->sortingOrder = 0;
 	boss->SetPosition({ 110,98 });
 	boss->SetOrigin(Origins::BC);
-	
+
 	AddGameObject(boss);
 
 

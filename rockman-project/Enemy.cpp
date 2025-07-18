@@ -42,10 +42,11 @@ void Enemy::SetOrigin(Origins preset)
 
 void Enemy::OnDamage(int damage)
 {
-	if (!isMove) damage = 0;
+	
 	hp = Utils::Clamp(hp - damage, 0, 100);
 	if (hp == 0)
 	{
+		isAlive = false;
 		SetActive(false);
 	}
 }
@@ -87,116 +88,24 @@ void Enemy::Reset()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
 
-	switch (type)
-	{
-	case Enemy::Types::Bat:
-		SetScale({ 1.f,1.f });
-		animator.Play("animations/bat.csv");
-		isMove = false;
-		break;
-	case Enemy::Types::Rabbit:
-		
-		animator.Play("animations/rabbit.csv");
-		isMove = true;
-		isGrounded = false;
-		break;
-	case Enemy::Types::Count:
-		break;
-	default:
-		break;
-	}
+	
 	player = (AniPlayer*)SCENE_MGR.GetCurrentScene()->FindGameObject("AniPlayer");
 
-	
+	SetActive(true);
+	SetPosition(initPosition);
+	SetScale({ 1.f,1.f });
 	
 	SetOrigin(Origins::BC);
+	isAlive = true;
+
 }
 
 void Enemy::Update(float dt)
 {
 	animator.Update(dt);
-	float s = speed;
-	switch (type)
-	{
-	case Enemy::Types::Bat:
-
-		direction = Utils::GetNormal(player->GetPosition() - GetPosition());
-		
-		if (Utils::Magnitude(player->GetPosition() - GetPosition()) >10 && Utils::Magnitude(player->GetPosition() - GetPosition()) < 100)
-		{
-			if (!isMove)
-			{
-				scale.y *= -1;
-				animator.Play("animations/bat.csv");
-			}
-			isMove = true;
-			
-			SetScale({ 1.f, 1.f });
-			
-			
-		}
-		else if (Utils::Magnitude(player->GetPosition() - GetPosition()) < 10)
-		{
-			player->OnDamage(2);
-			
-		}
-		else
-		{
-			s = 0;
-			if (!isMove)
-			{
-				
-				animator.Play("animations/bat2.csv");
-				
-			}
-			isMove = false;
-		}
-		SetPosition(GetPosition() + direction * s * dt);
-		break;
-	case Enemy::Types::Rabbit:
-
-		
-		direction = Utils::GetNormal(player->GetPosition() - GetPosition());
-
-
-		if (!isGrounded)
-		{
-			velocity += gravity * dt;
-		}
-
-		position += velocity * dt;
-		position.x = Utils::Clamp(position.x, 70, 4000);
-		if (sceneGame->FloorCheck(GetPosition().x, GetPosition().y + 1))
-		{
-			velocity.y = 0.f;
-			velocity.x = 0.f;
-			position.y -= 0.1f;
-			isGrounded = true;
-		}
-		moveTimer += dt;
-		if (moveTimer > moveInetrval)
-		{
-			if (direction.x < 0)
-			{
-				SetScale({ 1.f,1.f });
-				velocity.x = -100.f;
-			}
-			else {
-				SetScale({ -1.f,1.f });
-				velocity.x = 100.f;
-			}
-			velocity.y = -150.f;
-			isGrounded = false;
-			moveTimer = 0;
-		}
-		SetPosition(position);
-		break;
-	
-	default:
-		break;
-	}
-
+	UpdateBehavior(dt);
 	hitBox.UpdateTransform(body, GetLocalBounds());
+
 	
 }
 

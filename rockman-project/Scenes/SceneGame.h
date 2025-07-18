@@ -27,9 +27,9 @@ protected:
 	sf::Vector2f playerInitPos;
 	TileCollision* tileCollision;
 	std::list<Enemy*> enemyList;
-	std::list<Enemy*>enemyPool;
 	std::vector<sf::Vector2f> enemyPos;
 	sf::Music music;
+	
 	
 public:
 	SceneGame();
@@ -37,7 +37,7 @@ public:
 	
 	void InitZones();
 	void UpdateZones();
-	void ClearEnemy();
+	void DeleteEnemy();
 
 
 	void Init() override;
@@ -48,6 +48,10 @@ public:
 
 
 	void CheckEnemy();
+
+
+
+	Enemy* CreateEnemy(Enemy::Types type);
 
 	void SpawnEnemy(sf::Vector2f pos, Enemy::Types type);
 	const std::list<Enemy*>& GetEnemies() const { return enemyList; }
