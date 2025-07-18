@@ -24,6 +24,7 @@ enum class SceneIds
 	Opening,
 	Title,
 	Stage,
+	Chosen,
 	Game,
 	Ending,
 	Count,

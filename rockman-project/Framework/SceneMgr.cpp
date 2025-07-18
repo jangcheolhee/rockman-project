@@ -5,13 +5,14 @@
 #include "SceneGame.h"
 #include "SceneStage.h"
 #include "SceneEnding.h"
-
+#include "SceneStageChosen.h"
 void SceneMgr::Init()
 {
 
 	scenes.push_back(new SceneOpening());
 	scenes.push_back(new SceneTitle());
 	scenes.push_back(new SceneStage());
+	scenes.push_back(new SceneStageChosen());
 	scenes.push_back(new SceneGame());
 	scenes.push_back(new SceneEnding());
 	

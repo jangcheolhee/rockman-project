@@ -8,12 +8,13 @@ protected:
 	sf::Sprite body;
 	Animator animator;
 	float speed = 0.f;
-
+	std::string ani;
 public:
 	BasicPlayer(const std::string& name = "");
 	virtual ~BasicPlayer() = default;
 
 	void changeAni();
+	void SetAni(const std::string& ani);
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float rot) override;
 	void SetScale(const sf::Vector2f& s) override;

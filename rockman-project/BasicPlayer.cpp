@@ -14,6 +14,12 @@ void BasicPlayer::changeAni()
 	}
 }
 
+void BasicPlayer::SetAni(const std::string& ani)
+{
+	this->ani = ani;
+	animator.Play(this->ani);
+}
+
 void BasicPlayer::SetPosition(const sf::Vector2f& pos)
 {
 	GameObject::SetPosition(pos);
@@ -51,6 +57,14 @@ void BasicPlayer::Init()
 {
 	animator.SetTarget(&body);
 
+	animator.AddEvent("WoodMan1", 20,
+		[this]()
+		{
+
+			SCENE_MGR.ChangeScene(SceneIds::Game);
+		}
+	);
+
 	animator.AddEvent("Equip", 12,
 		[this]()
 		{
@@ -80,10 +94,14 @@ void BasicPlayer::Reset()
 		animator.Play("animations/titleIdle.csv");
 		
 	}
-	else 
+	else if(name == "Opening")
 	{
 		animator.Play("animations/opening.csv");
 		
+	}
+	else if (name == "Boss")
+	{
+		animator.Play("animations/woodMan1.csv");
 	}
 
 	
