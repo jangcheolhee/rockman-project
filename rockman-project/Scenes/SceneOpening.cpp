@@ -20,7 +20,7 @@ void SceneOpening::Init()
 void SceneOpening::Enter()
 {
 	worldView.setSize({ 256, 256 });
-	worldView.setCenter({ 123.f, 123.f });
+	worldView.setCenter({ 128.f, 128.f });
 	music.openFromFile("sounds/Opening.flac");
 	music.play();
 	Scene::Enter();

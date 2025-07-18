@@ -26,11 +26,11 @@ void SceneTitle::Init()
 	background = new SpriteGo("graphics/TitleScreen1.png");
 	background->sortingLayer = SortingLayers::Background;
 	background->sortingOrder = 0;
-	background->SetScale({ 4.f,4.f });
+	
 	AddGameObject(background);
 	player = (BasicPlayer*)AddGameObject(new BasicPlayer("Player"));
 	player->SetOrigin(Origins::BC);
-	player->SetScale({ 4.f,4.f });
+	
 	AddGameObject(player);
 	Scene::Init();
 }
@@ -43,7 +43,8 @@ void SceneTitle::Enter()
 	
 	player->SetPosition({ 760,410 });
 	openTime = 0; 
-
+	worldView.setSize({ 256,256 });
+	worldView.setCenter({ 128.f, 128.f });
 }
 
 void SceneTitle::Exit()

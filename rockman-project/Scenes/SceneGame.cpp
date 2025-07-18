@@ -487,7 +487,7 @@ void SceneGame::CheckCollisions()
 	}
 
 	// 사다리 검사
-	if (tileCollision->getTileType(pos.x, pos.y + 1) == TileType::LADDER || tileCollision->getTileType(pos.x, pos.y - player->GetLocalBounds().height - 1) == TileType::LADDER)
+	if (tileCollision->getTileType(pos.x, pos.y + 1) == TileType::LADDER )
 	{
 		player->SetIsLadder(true);
 	}

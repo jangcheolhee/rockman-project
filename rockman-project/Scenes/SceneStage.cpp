@@ -14,14 +14,14 @@ void SceneStage::Init()
 	backGround->sortingLayer = SortingLayers::Background;
 	backGround->sortingOrder = 0;
 	backGround->GetSprite().setTextureRect({1,21,256,256});
-	backGround->GetSprite().setScale({ 4.f,4.f });
+	
 	AddGameObject(backGround);
 
 	selectBox = new SpriteGo("graphics/stageSprite.png");
-	selectBox->sortingLayer = SortingLayers::UI;
+	selectBox->sortingLayer = SortingLayers::Foreground;
 	selectBox->sortingOrder = 0;
 	selectBox->GetSprite().setTextureRect({ 201,284,48,48 });
-	selectBox->GetSprite().setScale({ 4.f,4.f });
+	
 	selectBox->SetOrigin(Origins::MC);
 	AddGameObject(selectBox);
 	Scene::Init();
@@ -31,14 +31,16 @@ void SceneStage::Init()
 void SceneStage::Enter()
 {
 	
-	
-	selectBox->SetPosition(ScreenToWorld({ 262, 230 }));
+	worldView.setSize({ 256,256 });
+	worldView.setCenter({ 128.f, 128.f });
+	selectBox->SetPosition({ 128, 112 });
 	isFlash = true;
 	flashTime = 0;
 	stage = 4;
 	music.openFromFile("sounds/Stage Select.flac");
 	music.play();
 	Scene::Enter();
+	
 }
 
 void SceneStage::Exit()
@@ -72,7 +74,7 @@ void SceneStage::Update(float dt)
 		if (stage % 3 <2)
 		{
 			stage++;
-			pos.x += 256;
+			pos.x += 64;
 		}
 
 	}
@@ -82,7 +84,7 @@ void SceneStage::Update(float dt)
 		if (stage % 3 > 0)
 		{
 			stage --;
-			pos.x -= 256;
+			pos.x -= 64;
 		}
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Up))
@@ -90,7 +92,7 @@ void SceneStage::Update(float dt)
 		if (stage / 3 > 0)
 		{
 			stage -= 3;
-			pos.y -= 256;
+			pos.y -= 64;
 		}
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Down))
@@ -98,7 +100,7 @@ void SceneStage::Update(float dt)
 		if (stage / 3 < 2)
 		{
 			stage += 3;
-			pos.y += 256;
+			pos.y += 64;
 		}
 
 	}
