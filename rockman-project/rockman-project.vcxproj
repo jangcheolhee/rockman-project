@@ -110,7 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\SFML-2.6.2\include;.\Framework;.\Scenes;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\SFML-2.6.2\include;.\Framework;.\Scenes;$(ProjectDir);.\Enemy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -140,8 +140,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BatEnemy.cpp" />
-    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Enemy\BatEnemy.cpp" />
+    <ClCompile Include="Enemy\Enemy.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Framework\AnimationClip.cpp" />
     <ClCompile Include="Framework\Animator.cpp" />
@@ -155,6 +155,7 @@
     <ClCompile Include="HpBar.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="BasicPlayer.cpp" />
+    <ClCompile Include="Enemy\RabbitEnemy.cpp" />
     <ClCompile Include="Scenes\SceneStageChosen.cpp" />
     <ClCompile Include="Scenes\SceneStage.cpp" />
     <ClCompile Include="Scenes\SceneEnding.cpp" />
@@ -172,8 +173,8 @@
     <ClCompile Include="TileCollision.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BatEnemy.h" />
-    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Enemy\BatEnemy.h" />
+    <ClInclude Include="Enemy\Enemy.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Framework\AnimationClip.h" />
     <ClInclude Include="Framework\Animator.h" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Framework\Scene.h" />
     <ClInclude Include="BasicPlayer.h" />
     <ClInclude Include="HpBar.h" />
+    <ClInclude Include="Enemy\RabbitEnemy.h" />
     <ClInclude Include="Scenes\SceneStageChosen.h" />
     <ClInclude Include="Scenes\SceneStage.h" />
     <ClInclude Include="Scenes\SceneEnding.h" />

@@ -72,7 +72,7 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
+    <ClCompile Include="Enemy\Enemy.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\SceneOpening.cpp">
@@ -96,7 +96,10 @@
     <ClCompile Include="Scenes\SceneStageChosen.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="BatEnemy.cpp">
+    <ClCompile Include="Enemy\BatEnemy.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy\RabbitEnemy.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -167,7 +170,7 @@
     <ClInclude Include="Bullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
+    <ClInclude Include="Enemy\Enemy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Scenes\SceneOpening.h">
@@ -191,7 +194,10 @@
     <ClInclude Include="Scenes\SceneStageChosen.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="BatEnemy.h">
+    <ClInclude Include="Enemy\BatEnemy.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy\RabbitEnemy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,7 @@
 #include "TileCollision.h"
 #include "HpBar.h"
 #include "BatEnemy.h"
+#include "RabbitEnemy.h"
 
 
 SceneGame::SceneGame() : Scene(SceneIds::Game)
@@ -25,7 +26,7 @@ void SceneGame::InitZones()
 			std::cout << "Zone 1 Enter" << std::endl;
 
 			SpawnEnemy({ 350.f,100.f }, Enemy::Types::Bat);
-			SpawnEnemy({ 300.f,100.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 300.f,100.f }, Enemy::Types::Rabbit);
 			SpawnEnemy({ 400.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 500.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 600.f,100.f }, Enemy::Types::Bat);
@@ -429,10 +430,10 @@ void SceneGame::CheckEnemy()
 {
 	
 	sf::FloatRect view(
-		worldView.getCenter().x - worldView.getSize().x / 2.f,
-		worldView.getCenter().y - worldView.getSize().y / 2.f,
-		worldView.getSize().x,
-		worldView.getSize().y
+		worldView.getCenter().x - worldView.getSize().x / 2.f - 4,
+		worldView.getCenter().y - worldView.getSize().y / 2.f - 4,
+		worldView.getSize().x + 8,
+		worldView.getSize().y + 8
 	);
 	auto it = enemyList.begin();
 	while (it != enemyList.end())
@@ -485,7 +486,7 @@ Enemy* SceneGame::CreateEnemy(Enemy::Types type)
 		break;
 
 	case Enemy::Types::Rabbit:
-	
+		enemy = new RabbitEnemy();
 		break;
 
 	default:
