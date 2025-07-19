@@ -62,7 +62,7 @@ void AniPlayer::Shoot() // 충돌 되었을시 발사 불가
 	bullet->Reset();
 	sf::Vector2f pos = position + look * 10.f;
 	pos.y -= 10;
-	bullet->Fire(pos, look, 800.f, 50);
+	bullet->Fire(pos, look, 800.f, 4);
 	bulletList.push_back(bullet);
 	sceneGame->AddGameObject(bullet);
 	idleShootTimer = 0;
@@ -189,7 +189,7 @@ void AniPlayer::Update(float dt)
 		else
 		{
 			velocity.y = 0.f;
-			position.y -= 0.1f;
+			position.y -= 0.05f;
 		}
 
 		isGround = false;

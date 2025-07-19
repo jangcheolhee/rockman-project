@@ -1,0 +1,9 @@
+ID,FPS,"LoopType (0: Single, 1: Loop)",,,
+Dog,5,1,,,
+,,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
+graphics/enemy.png,44,607,70,60,0
+graphics/enemy.png,123,607,70,60,
+graphics/enemy.png,203,607,70,60,
+graphics/enemy.png,284,607,70,60,
+graphics/enemy.png,362,607,70,60,

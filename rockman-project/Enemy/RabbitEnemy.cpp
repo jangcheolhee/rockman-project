@@ -15,6 +15,7 @@ void RabbitEnemy::Reset()
 	isGrounded = false;
 	move = true;
 	attack = 0;
+	hp = 12;
 	
 
 }

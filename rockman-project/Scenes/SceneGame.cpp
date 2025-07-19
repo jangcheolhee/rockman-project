@@ -8,6 +8,7 @@
 #include "HpBar.h"
 #include "BatEnemy.h"
 #include "RabbitEnemy.h"
+#include "DogEnemy.h"
 
 
 SceneGame::SceneGame() : Scene(SceneIds::Game)
@@ -64,11 +65,12 @@ void SceneGame::InitZones()
 		});
 	// Zone 3
 	mapZones.push_back({
-		sf::FloatRect(1025, 515, 256, 256),
+		sf::FloatRect(1025, 515, 255, 255),
 		3,
 		[this]()
 		{
 			std::cout << "Zone 3 Enter" << std::endl;
+			SpawnEnemy({ 1223,671 }, Enemy::Types::Dog);
 			worldView.setCenter({ 1153,640 });
 
 		},
@@ -80,12 +82,15 @@ void SceneGame::InitZones()
 		false
 		});
 	mapZones.push_back({
-		sf::FloatRect(1281, 515, 256, 256),
+		sf::FloatRect(1281, 515, 255, 255),
 		4,
 		[this]()
 		{
 			worldView.setCenter({ 1409,640 });
 			std::cout << "Zone 4 Enter" << std::endl;
+			SpawnEnemy({ 1472,638 }, Enemy::Types::Dog);
+
+			
 
 		},
 		[this]()
@@ -276,6 +281,7 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/rabbit.csv");
 	ANI_CLIP_MGR.Load("animations/ladder.csv");
 	ANI_CLIP_MGR.Load("animations/particle.csv");
+	ANI_CLIP_MGR.Load("animations/dog.csv");
 
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf");
 	go->SetString("Game");
@@ -346,7 +352,34 @@ void SceneGame::Update(float dt)
 		worldView.setCenter({ x, 128 });
 		break;
 	}
-	case 2:
+	//case 2:
+	//{
+	//	bool success = true;
+	//	auto it = enemyList.begin();
+	//	while (it != enemyList.end())
+	//	{
+	//		if ((*it)->GetActive())
+	//		{
+
+	//			success = false;
+	//			
+	//		}
+
+	//		std::cout << (*it)->GetActive();
+	//		it++;
+	//	}
+	//	std::cout << success <<std::endl;
+	//	float minY = 250;
+	//	float maxY = minY + 255.f;
+
+	//	if (!success)
+	//	{
+	//		float clampedY = Utils::Clamp(player->GetPosition().y, minY, maxY);
+	//		player->SetPosition({ player->GetPosition().x, clampedY });
+	//	}
+	//	break;
+	//}
+	case 3: case 4:
 	{
 		bool success = true;
 		auto it = enemyList.begin();
@@ -354,22 +387,22 @@ void SceneGame::Update(float dt)
 		{
 			if ((*it)->GetActive())
 			{
-
 				success = false;
 				
 			}
-
-			std::cout << (*it)->GetActive();
+			
 			it++;
 		}
-		std::cout << success <<std::endl;
-		float minY = 250;
-		float maxY = minY + 255.f;
-
+		
+		float minX = mapZones[zoneID - 1].bounds.left;
+		float maxX = mapZones[zoneID - 1].bounds.left + mapZones[zoneID - 1].bounds.width - player->GetLocalBounds().width;
+		//float minY = mapZones[zoneID - 1].bounds.top ;
+		//float maxY = mapZones[zoneID - 1].bounds.top - mapZones[zoneID - 1].bounds.height;
 		if (!success)
 		{
-			float clampedY = Utils::Clamp(player->GetPosition().y, minY, maxY);
-			player->SetPosition({ player->GetPosition().x, clampedY });
+			float clampedX = Utils::Clamp(player->GetPosition().x, minX, maxX);
+			//float clampedY = Utils::Clamp(player->GetPosition().y, minY, maxY);
+			player->SetPosition({ clampedX, player->GetPosition().y});
 		}
 		break;
 	}
@@ -495,7 +528,9 @@ Enemy* SceneGame::CreateEnemy(Enemy::Types type)
 	case Enemy::Types::Rabbit:
 		enemy = new RabbitEnemy();
 		break;
-
+	case Enemy::Types::Dog:
+		enemy = new DogEnemy();
+		break;
 	default:
 		break;
 	}

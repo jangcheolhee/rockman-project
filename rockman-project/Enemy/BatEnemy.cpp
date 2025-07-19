@@ -7,6 +7,7 @@ void BatEnemy::Init()
 	Enemy::Init();
 	type = Types::Bat;
 	speed = 100.f;
+	hp = 8;
 	animator.Play("animations/bat.csv");
 }
 void BatEnemy::Reset()
@@ -33,7 +34,7 @@ void BatEnemy::UpdateBehavior(float dt)
 	}
 	else if (Utils::Magnitude(player->GetPosition() - GetPosition()) < 10)
 	{
-		player->OnDamage(20);
+		player->OnDamage(4);
 		SetPosition({ position.x, position.y - 80 });
 
 	}

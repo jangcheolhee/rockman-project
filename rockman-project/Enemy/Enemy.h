@@ -13,6 +13,7 @@ public:
 	{
 		Bat,
 		Rabbit,
+		Dog,
 		Count,
 	};
 protected:
