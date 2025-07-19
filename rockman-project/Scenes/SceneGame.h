@@ -60,5 +60,7 @@ public:
 	void CheckCollisions();
 	bool FloorCheck(float x, float y);
 
+	bool LadderCheck(float x, float y);
+
 };
 

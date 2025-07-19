@@ -70,7 +70,7 @@ public:
 
 	void SetIsGround(bool ground) { isGround = ground; }
 	void SetIsGrounded() { isGrounded = true; }
-	void SetIsLadder(bool ladde) { ladder = ladde; }
+	void SetIsLadder(bool ladder) { isLadder = ladder; }
 	
 	void IsDamage() { isDamage = !isDamage; }
 	void SetIsCeiling() {

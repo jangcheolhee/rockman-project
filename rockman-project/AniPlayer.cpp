@@ -176,44 +176,22 @@ void AniPlayer::Update(float dt)
 		}
 	}
 
-	// 낙하 중인지 검사
-	if (!sceneGame->FloorCheck(GetPosition().x, GetPosition().y + 1))
-		isGrounded = false;
 
 	
 	if (isGround)
 	{
-		
-
-		
-		if (isLadder && ladder)
-		{	
-			
-			ladderTimer += dt * 2 ;
-			
-			SetScale((int)ladderTimer % 2 == 0 ? sf::Vector2f(1.f, 1.f) : sf::Vector2f(-1.f, 1.f));
-			
-			
-			velocity.x = 0.f; // 사다리에서 x 이동 제한할 경우
-			velocity.y = v * speed;
-			animator.Play("animations/ladder.csv");
-			state = State::Ladder;
-
-		}
-		else if (ladder)
+		if (isLadder)
 		{
-			if (InputMgr::GetKeyDown(sf::Keyboard::Up) || InputMgr::GetKeyDown(sf::Keyboard::Down))
-			{
-				isLadder = true;
-			}
+			state = State::Ladder;
+			animator.Play("animations/ladder.csv");
+			velocity.y = v * speed;
 		}
 		else
 		{
 			velocity.y = 0.f;
 			position.y -= 0.1f;
-			isLadder = false;
 		}
-		
+
 		isGround = false;
 		isGrounded = true;
 	}
@@ -221,6 +199,11 @@ void AniPlayer::Update(float dt)
 	{
 		velocity += gravity * dt;
 	}
+	
+
+	// 낙하 중인지 검사
+	if (!sceneGame->FloorCheck(GetPosition().x, GetPosition().y + 1))
+		isGrounded = false;
 
 
 	// 위치 적용

@@ -26,7 +26,7 @@ void SceneGame::InitZones()
 			std::cout << "Zone 1 Enter" << std::endl;
 
 			SpawnEnemy({ 350.f,100.f }, Enemy::Types::Bat);
-			SpawnEnemy({ 300.f,100.f }, Enemy::Types::Rabbit);
+			SpawnEnemy({ 300.f,150.f }, Enemy::Types::Rabbit);
 			SpawnEnemy({ 400.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 500.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 600.f,100.f }, Enemy::Types::Bat);
@@ -551,10 +551,16 @@ void SceneGame::CheckCollisions()
 	{
 		player->SetIsLadder(false);
 	}
+
 }
 
 bool SceneGame::FloorCheck(float x, float y)
 {
 	return tileCollision->getTileType(x, y) == TileType::BLOCK || tileCollision->getTileType(x, y) == TileType::LADDER;
 }
+bool SceneGame::LadderCheck(float x, float y)
+{
+	return tileCollision->getTileType(x, y) == TileType::BLOCK || tileCollision->getTileType(x, y) == TileType::EMPTY;
+}
+
 
