@@ -35,7 +35,8 @@ void OstrichEnemy::UpdateBehavior(float dt)
 		isGrounded = true;
 	}
 
-	if (Utils::Magnitude(player->GetPosition() - GetPosition()) < 10)
+	
+	if (player->GetGlobalBounds().intersects(GetGlobalBounds()))
 	{
 		player->OnDamage(4);
 

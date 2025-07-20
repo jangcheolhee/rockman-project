@@ -62,7 +62,7 @@ void AniPlayer::Shoot() // 충돌 되었을시 발사 불가
 	bullet->Reset();
 	sf::Vector2f pos = position + look * 10.f;
 	pos.y -= 10;
-	bullet->Fire(pos, look, 800.f, 4);
+	bullet->Fire(pos, look, 600.f, 4);
 	bulletList.push_back(bullet);
 	sceneGame->AddGameObject(bullet);
 	idleShootTimer = 0;
@@ -84,8 +84,7 @@ void AniPlayer::Reset()
 	else
 		sceneGame = nullptr;
 
-	sortingLayer = SortingLayers::Foreground;
-	sortingOrder = 0;
+
 
 	animator.Play("animations/idle.csv");
 	SetOrigin(Origins::BC);
@@ -118,16 +117,18 @@ void AniPlayer::Reset()
 	ladder = false;
 	isDead = false;
 	SetActive(true);
+	SetPosition({ 100.f,80.f });
+	
 }
 
 void AniPlayer::Update(float dt)
 {
 	animator.Update(dt);
+	
 	damageTimer += dt;
 	if (isDead)
 	{
 		deadTimer += dt;
-		std::cout << deadTimer << std::endl;
 		if (deadTimer > 1.5f) // 1초 후 씬 전환
 		{
 			
@@ -177,6 +178,13 @@ void AniPlayer::Update(float dt)
 	}
 
 
+	// 방향 전환
+	if (h != 0.f)
+	{
+		SetScale(h > 0.f ? sf::Vector2f(1.f, 1.f) : sf::Vector2f(-1.f, 1.f));
+		look = (h > 0.f) ? sf::Vector2f(1.f, 0.f) : sf::Vector2f(-1.f, 0.f);
+	}
+
 	
 	if (isGround)
 	{
@@ -185,6 +193,13 @@ void AniPlayer::Update(float dt)
 			state = State::Ladder;
 			animator.Play("animations/ladder.csv");
 			velocity.y = v * speed;
+			ladderTimer += dt;
+			if (ladderTimer > 0.2)
+			{
+				scale.x *= -1;
+				ladderTimer = 0;
+				SetScale(scale);
+			}
 		}
 		else
 		{
@@ -211,13 +226,6 @@ void AniPlayer::Update(float dt)
 	position.x = Utils::Clamp(position.x, 150, 8000);
 
 	SetPosition(position);
-
-	// 방향 전환
-	if (h != 0.f)
-	{
-		SetScale(h > 0.f ? sf::Vector2f(1.f, 1.f) : sf::Vector2f(-1.f, 1.f));
-		look = (h > 0.f) ? sf::Vector2f(1.f, 0.f) : sf::Vector2f(-1.f, 0.f);
-	}
 
 	// 애니메이션 상태 전환
 	
@@ -321,12 +329,16 @@ void AniPlayer::Update(float dt)
 			{
 				animator.Play("animations/idle.csv");
 				state = State::Idle;
+				ladderTimer = 0.f;
+
 				
 			}
 			else
 			{
 				animator.Play("animations/run.csv");
 				state = State::Run;
+				ladderTimer = 0.f;
+
 			}
 		}
 		break;

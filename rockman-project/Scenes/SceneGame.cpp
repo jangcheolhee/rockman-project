@@ -27,13 +27,11 @@ void SceneGame::InitZones()
 		{
 			std::cout << "Zone 1 Enter" << std::endl;
 
-			SpawnEnemy({ 350.f,100.f }, Enemy::Types::Bat);
-		
-			SpawnEnemy({ 400.f,100.f }, Enemy::Types::Bat);
-			SpawnEnemy({ 500.f,100.f }, Enemy::Types::Bat);
-			SpawnEnemy({ 600.f,100.f }, Enemy::Types::Bat);
-			SpawnEnemy({ 700.f,100.f }, Enemy::Types::Bat);
-			SpawnEnemy({ 800.f,100.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 350.f,80.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 500.f,80.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 650.f,80.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 750.f,80.f }, Enemy::Types::Bat);
+			
 			SpawnEnemy({ 921,190.f }, Enemy::Types::Rabbit);
 		},
 	  [this]()
@@ -226,7 +224,7 @@ void SceneGame::InitZones()
 		[this]()
 		{
 			std::cout << "Zone 12 Enter" << std::endl;
-			SpawnEnemy({ 3001.f, 1213 }, Enemy::Types::Ostrich);
+			SpawnEnemy({ 3201.f, 1152 }, Enemy::Types::Ostrich);
 			SpawnEnemy({ 3295.f, 1152 }, Enemy::Types::Ostrich);
 
 		},
@@ -323,7 +321,9 @@ void SceneGame::Init()
 void SceneGame::Enter()
 {
 	music.openFromFile("sounds/WoodMan.flac");
+	music.setLoop(true);
 	music.play();
+	
 
 	//UI VIEW
 	auto size = FRAMEWORK.GetWindowSizeF();
@@ -340,7 +340,6 @@ void SceneGame::Enter()
 
 
 	Scene::Enter();
-	player->SetPosition({ 100,50 });
 
 }
 
@@ -474,10 +473,10 @@ void SceneGame::CheckEnemy()
 {
 	
 	sf::FloatRect view(
-		worldView.getCenter().x - worldView.getSize().x / 2 ,
-		worldView.getCenter().y - worldView.getSize().y / 2,
-		worldView.getSize().x *2 ,
-		worldView.getSize().y *2
+		worldView.getCenter().x - worldView.getSize().x / 2 - 20 ,
+		worldView.getCenter().y - worldView.getSize().y / 2 -20, 
+		worldView.getSize().x + 40 ,
+		worldView.getSize().y + 40
 	);
 	auto it = enemyList.begin();
 	while (it != enemyList.end())

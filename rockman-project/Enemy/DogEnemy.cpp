@@ -18,7 +18,9 @@ void DogEnemy::Reset()
 
 void DogEnemy::UpdateBehavior(float dt)
 {
-	if (Utils::Magnitude(player->GetPosition() - GetPosition()) < 10)
+
+	
+	if (player->GetGlobalBounds().intersects(GetGlobalBounds()))
 	{
 		player->OnDamage(10);
 

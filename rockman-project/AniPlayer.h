@@ -52,7 +52,7 @@ protected:
 	int hp = 0;
 
 	bool isDamage = true;
-	float ladderTimer = 0;
+	
 	float damageTimer = 0;
 
 
@@ -63,6 +63,8 @@ protected:
 
 	bool isDead = false;
 	float deadTimer = 0.f;
+	float ladderTimer = 0.f;
+
 
 public:
 	AniPlayer(const std::string& name = "");

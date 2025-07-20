@@ -32,12 +32,13 @@ void BatEnemy::UpdateBehavior(float dt)
 
 
 	}
-	else if (Utils::Magnitude(player->GetPosition() - GetPosition()) < 10)
+	else if (player->GetGlobalBounds().intersects(GetGlobalBounds()))
 	{
 		player->OnDamage(4);
 		SetPosition({ position.x, position.y - 80 });
 
 	}
+
 	else
 	{
 		s = 0;
