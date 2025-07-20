@@ -1,0 +1,7 @@
+ID,FPS,"LoopType (0: Single, 1: Loop)",,,
+Ostrich,10,1,,,
+,,,,,
+TEXTURE ID,LEFT,TOP,WIDTH,HEIGHT,"FLIPX (0:Fale, 1:True)"
+graphics/enemy.png,323,352,32,42,0
+graphics/enemy.png,356,352,40,42,
+graphics/enemy.png,400,352,40,42,

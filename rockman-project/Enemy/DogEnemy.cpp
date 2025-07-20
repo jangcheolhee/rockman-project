@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "DogEnemy.h"
+#include "AniPlayer.h"
 
 void DogEnemy::Init()
 {
@@ -17,4 +18,9 @@ void DogEnemy::Reset()
 
 void DogEnemy::UpdateBehavior(float dt)
 {
+	if (Utils::Magnitude(player->GetPosition() - GetPosition()) < 10)
+	{
+		player->OnDamage(10);
+
+	}
 }

@@ -9,6 +9,7 @@
 #include "BatEnemy.h"
 #include "RabbitEnemy.h"
 #include "DogEnemy.h"
+#include "OstrichEnemy.h"
 
 
 SceneGame::SceneGame() : Scene(SceneIds::Game)
@@ -27,12 +28,13 @@ void SceneGame::InitZones()
 			std::cout << "Zone 1 Enter" << std::endl;
 
 			SpawnEnemy({ 350.f,100.f }, Enemy::Types::Bat);
-			SpawnEnemy({ 300.f,150.f }, Enemy::Types::Rabbit);
+		
 			SpawnEnemy({ 400.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 500.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 600.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 700.f,100.f }, Enemy::Types::Bat);
 			SpawnEnemy({ 800.f,100.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 921,190.f }, Enemy::Types::Rabbit);
 		},
 	  [this]()
 		{
@@ -108,6 +110,7 @@ void SceneGame::InitZones()
 		{
 			worldView.setCenter({ 1665,640 });
 			std::cout << "Zone 5 Enter" << std::endl;
+			SpawnEnemy({ 1761,606 }, Enemy::Types::Dog);
 
 		},
 		[this]()
@@ -139,6 +142,8 @@ void SceneGame::InitZones()
 		{
 			std::cout << "Zone 7 Enter" << std::endl;
 			worldView.setCenter({ 1921,384 });
+			SpawnEnemy({ 1900.f,354.f }, Enemy::Types::Bat);
+			SpawnEnemy({ 1940.f,354.f }, Enemy::Types::Bat);
 		},
 		[this]()
 		{
@@ -148,7 +153,7 @@ void SceneGame::InitZones()
 		false
 		});
 	mapZones.push_back({
-		sf::FloatRect(1793, 1, 1280, 256),
+		sf::FloatRect(1793, 1, 1279, 255),
 		8,
 		[this]()
 		{
@@ -164,13 +169,13 @@ void SceneGame::InitZones()
 		false
 		});
 	mapZones.push_back({
-		sf::FloatRect(2817, 257, 256, 256),
+		sf::FloatRect(2817, 257, 255, 255),
 		9,
 		[this]()
 		{
 			std::cout << "Zone 9 Enter" << std::endl;
 			worldView.setCenter({ 2945,384 });
-
+			SpawnEnemy({ 2877.f,446.f }, Enemy::Types::Rabbit);
 		},
 		[this]()
 		{
@@ -181,12 +186,13 @@ void SceneGame::InitZones()
 		false
 		});
 	mapZones.push_back({
-		sf::FloatRect(2817, 513, 256, 256),
+		sf::FloatRect(2817, 513, 255, 255),
 		10,
 		[this]()
 		{
 			std::cout << "Zone 10 Enter" << std::endl;
 			worldView.setCenter({ 2945,640 });
+			SpawnEnemy({ 3003.f,703.f }, Enemy::Types::Rabbit);
 		},
 		[this]()
 		{
@@ -197,12 +203,13 @@ void SceneGame::InitZones()
 		false
 		});
 	mapZones.push_back({
-		sf::FloatRect(2817, 769, 256, 226),
+		sf::FloatRect(2817, 769, 255, 225),
 		11,
 		[this]()
 		{
 			std::cout << "Zone 11 Enter" << std::endl;
 			worldView.setCenter({ 2945,860 });
+			SpawnEnemy({ 2868.f,960.f }, Enemy::Types::Rabbit);
 		},
 		[this]()
 		{
@@ -214,11 +221,13 @@ void SceneGame::InitZones()
 		false
 		});
 	mapZones.push_back({
-		sf::FloatRect(2817, 1028, 752, 226),
+		sf::FloatRect(2817, 1028, 751, 225),
 		12,
 		[this]()
 		{
 			std::cout << "Zone 12 Enter" << std::endl;
+			SpawnEnemy({ 3001.f, 1213 }, Enemy::Types::Ostrich);
+			SpawnEnemy({ 3295.f, 1152 }, Enemy::Types::Ostrich);
 
 		},
 		[this]()
@@ -282,6 +291,7 @@ void SceneGame::Init()
 	ANI_CLIP_MGR.Load("animations/ladder.csv");
 	ANI_CLIP_MGR.Load("animations/particle.csv");
 	ANI_CLIP_MGR.Load("animations/dog.csv");
+	ANI_CLIP_MGR.Load("animations/ostrich.csv");
 
 	TextGo* go = new TextGo("fonts/DS-DIGIT.ttf");
 	go->SetString("Game");
@@ -379,7 +389,7 @@ void SceneGame::Update(float dt)
 	//	}
 	//	break;
 	//}
-	case 3: case 4:
+	case 3: case 4: case 5:
 	{
 		bool success = true;
 		auto it = enemyList.begin();
@@ -464,10 +474,10 @@ void SceneGame::CheckEnemy()
 {
 	
 	sf::FloatRect view(
-		worldView.getCenter().x - worldView.getSize().x / 2.f - 4,
-		worldView.getCenter().y - worldView.getSize().y / 2.f - 4,
-		worldView.getSize().x + 8,
-		worldView.getSize().y + 8
+		worldView.getCenter().x - worldView.getSize().x / 2 ,
+		worldView.getCenter().y - worldView.getSize().y / 2,
+		worldView.getSize().x *2 ,
+		worldView.getSize().y *2
 	);
 	auto it = enemyList.begin();
 	while (it != enemyList.end())
@@ -531,6 +541,9 @@ Enemy* SceneGame::CreateEnemy(Enemy::Types type)
 	case Enemy::Types::Dog:
 		enemy = new DogEnemy();
 		break;
+	case Enemy::Types::Ostrich:
+		enemy = new OstrichEnemy();
+		break;
 	default:
 		break;
 	}
@@ -544,7 +557,7 @@ void SceneGame::SpawnEnemy(sf::Vector2f pos, Enemy::Types type)
 
 	Enemy* enemy = CreateEnemy(type);
 	enemy->SetInitPosition(pos);
-	enemy->SetType(type);
+	
 	enemy->Reset();
 	enemy->SetActive(false);
 	AddGameObject(enemy);

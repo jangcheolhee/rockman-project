@@ -14,6 +14,7 @@ public:
 		Bat,
 		Rabbit,
 		Dog,
+		Ostrich,
 		Count,
 	};
 protected:
@@ -75,7 +76,7 @@ public:
 	
 	virtual void UpdateBehavior(float dt) = 0; // 각 적 클래스가 구현
 	
-	void SetType(Types type);
+	
 
 
 };

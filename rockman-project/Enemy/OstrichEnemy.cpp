@@ -1,64 +1,50 @@
 #include "stdafx.h"
-#include "RabbitEnemy.h"
+#include "OstrichEnemy.h"
 #include "AniPlayer.h"
 #include "SceneGame.h"
 
-void RabbitEnemy::Init()
+void OstrichEnemy::Init()
 {
 	Enemy::Init();
+	type = Types::Ostrich;
+	speed = 100.f;
+	hp = 20;
+	animator.Play("animations/ostrich.csv");
+	direction = { -1.f, 0.f };
 }
 
-void RabbitEnemy::Reset()
+void OstrichEnemy::Reset()
 {
 	Enemy::Reset();
-	animator.Play("animations/rabbit.csv");
-	isGrounded = false;
-	move = true;
-	attack = 0;
-	hp = 12;
-	
-
 }
 
-void RabbitEnemy::UpdateBehavior(float dt)
+void OstrichEnemy::UpdateBehavior(float dt)
 {
-	direction = Utils::GetNormal(player->GetPosition() - GetPosition());
-
-
 	if (!isGrounded)
 	{
 		velocity += gravity * dt;
 	}
 
+	velocity.x = -speed;
 	position += velocity * dt;
 	position.x = Utils::Clamp(position.x, sceneGame->GetZoneBounds().left + GetLocalBounds().width / 2, sceneGame->GetZoneBounds().left + sceneGame->GetZoneBounds().width - GetLocalBounds().width / 2);
 	if (sceneGame->FloorCheck(GetPosition().x, GetPosition().y + 1))
 	{
 		velocity.y = 0.f;
-		velocity.x = 0.f;
 		position.y -= 0.1f;
 		isGrounded = true;
 	}
+
 	if (Utils::Magnitude(player->GetPosition() - GetPosition()) < 10)
 	{
-		player->OnDamage(5);
+		player->OnDamage(4);
 
-	}
-	if (move)
+	}else if (Utils::Magnitude(player->GetPosition() - GetPosition()) < 30)
 	{
-		if (direction.x < 0)
-		{
-			SetScale({ 1.f,1.f });
-			velocity.x = -100.f;
-		}
-		else {
-			SetScale({ -1.f,1.f });
-			velocity.x = 100.f;
-		}
 		velocity.y = -150.f;
-		isGrounded = false;
-		move = false;
-	}
-	SetPosition(position);
+		
 
+	}
+	isGrounded = false;
+	SetPosition(position);
 }

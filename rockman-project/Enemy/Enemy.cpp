@@ -115,21 +115,3 @@ void Enemy::Draw(sf::RenderWindow& window)
 	hitBox.Draw(window);
 }
 
-void Enemy::SetType(Types type)
-{
-	this->type = type;
-	switch (this->type)
-	{
-	case Types::Bat:
-		hp = 100;
-		speed = 50.f;
-		
-		break;
-	case Types::Rabbit:
-		hp = 100;
-		speed = 50.f;
-		moveInetrval = 3.0f;
-		break;
-
-	}
-}

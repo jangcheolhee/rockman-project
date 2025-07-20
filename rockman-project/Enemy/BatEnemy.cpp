@@ -6,7 +6,7 @@ void BatEnemy::Init()
 {
 	Enemy::Init();
 	type = Types::Bat;
-	speed = 100.f;
+	speed = 40.f;
 	hp = 8;
 	animator.Play("animations/bat.csv");
 }
